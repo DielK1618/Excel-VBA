@@ -1,0 +1,9 @@
+# Excel 바이너리 파일 (소스는 .bas/.cls로 관리)
+*.xlam
+*.xlsb
+*.xltm
+*.xltx
+
+# 임시 파일
+~$*
+Thumbs.db
