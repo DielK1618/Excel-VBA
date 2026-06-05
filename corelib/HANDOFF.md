@@ -26,7 +26,7 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 
 ---
 
-## 현재 완성 상태 (2026-06-04 기준)
+## 현재 완성 상태 (2026-06-05 기준)
 
 ### 완성된 am_ 모듈
 
@@ -50,19 +50,21 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 
 ---
 
-## 다음 작업 순서 (Phase 2부터)
+## 다음 작업
 
-### Phase 2 — 신규 모듈
-1. **`am_Error` 신규** ✅ 완료 (2026-06-04)
+**전체 이식 완료. 새 작업 발생 시 아래 우선순위로 진행:**
 
-2. **`am_DB` 확장** ✅ 완료 (2026-06-04)
+1. **xlam 실제 적용 테스트** — cwb_01.xlsm 에서 각 모듈 함수 호출 검증
+2. **신규 기능 추가** — 필요 시 SOURCES.md 미이식 항목 재검토
+3. **버그 수정** — 사용 중 발견된 이슈 처리
 
-### Phase 3 — am_Utils 신규 ✅ 완료 (2026-06-05)
-- 이식: tpl_Array, tpl_Check(일부), tpl_Code(일부), tpl_ExtApp, tpl_Media(일부), tpl_ReplaceText(일부), tpl_Tools(일부), tpl_Validation
-- 제외: tpl_Procedure·SyncCodeNamesToSheetNames (VBProject/Trust Center 의존, 기존 결정 유지)
-
-### Phase 4 — am_Excel 완성 ✅ 완료 (2026-06-05)
-- 이식: tpl_ExportFile, tpl_Chart, tpl_Shapes, tpl_KeyBoard, tpl_Mouse
+### 완료된 Phase 이력
+| Phase | 내용 | 완료일 |
+|---|---|---|
+| Phase 1 | 기본 구조 (am_Core/Path/File/DB/Sheet/Table/Range/Format) | 2026-05-21 ~ 06-02 |
+| Phase 2 | 신규 모듈 (am_Error, am_DB 확장) | 2026-06-04 |
+| Phase 3 | am_Utils 신규 | 2026-06-05 |
+| Phase 4 | am_Excel 완성 | 2026-06-05 |
 
 ---
 
