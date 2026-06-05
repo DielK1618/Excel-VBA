@@ -34,23 +34,23 @@
 ### am_Excel
 | 원본 | 상태 | 비고 |
 |---|---|---|
-| `tpl_Chart` | ⬜ 대기 | 차트 생성/조작 |
-| `tpl_ExportFile` | ⬜ 대기 | 파일 내보내기 |
-| `tpl_KeyBoard` | ⬜ 대기 | 단축키 등록/해제 |
-| `tpl_Mouse` | ⬜ 대기 | 마우스 이벤트 |
-| `tpl_Shapes` | ⬜ 대기 | 도형 조작 |
+| `tpl_Chart` | ✅ 완료 | SetChartDataRange (ws 인수 추가) |
+| `tpl_ExportFile` | ✅ 완료 | SetPrintPage, ExportPDF, ExportSheetToCSV (xlCSV, prv_MkFolder 내부 구현) |
+| `tpl_KeyBoard` | ✅ 완료 | Enum + API + ExecuteKeyAction/Sequence/Range (prv_SendKey/Combo/WaitMs) |
+| `tpl_Mouse` | ✅ 완료 | GetMousePosition, ClickAtPosition, WaitTime (타입 수정, prv_WaitMs 공용) |
+| `tpl_Shapes` | ✅ 완료 | RunShpMacro, GetShapeTextSafe (prv_GetShapeTextSafe_GItem) |
 
 ### am_Utils (신규 모듈)
 | 원본 | 상태 | 비고 |
 |---|---|---|
-| `tpl_Array` | ⬜ 대기 | 배열 유틸리티 |
-| `tpl_Check` | ⬜ 대기 | 값 검사 유틸리티 |
-| `tpl_Code` | ⬜ 대기 | 코드 변환 유틸리티 |
-| `tpl_ExtApp` | ⬜ 대기 | 외부 앱 실행 |
-| `tpl_Media` | ⬜ 대기 | 미디어(사운드 등) |
-| `tpl_ReplaceText` | ⬜ 대기 | 문자열 치환 |
-| `tpl_Tools` | ⬜ 대기 | 기타 도구 |
-| `tpl_Validation` | ⬜ 대기 | 입력 유효성 검사 |
+| `tpl_Array` | ✅ 완료 | ConvertToArrData, prv_FlattenArray, prv_CountElements |
+| `tpl_Check` | ✅ 완료 | IsArrayEmpty, IsCells, IsTableRange, IsRangeMerged(버그수정), IsValidFileName, GetValidationType (AccessTableExists → am_DB 배치) |
+| `tpl_Code` | ✅ 완료 | CreateUniqueID, GenerateRandomCode, prv_CheckUniqueID (BtCreateCodes/GetExistingCodes 제외) |
+| `tpl_ExtApp` | ✅ 완료 | OpenAddressInGoogleMaps, GetVideoLength |
+| `tpl_Media` | ✅ 완료 | GetVideoLength는 tpl_ExtApp 것으로 통합, GetVideoDuration 제외 |
+| `tpl_ReplaceText` | ✅ 완료 | ConvertToExcelSerialDate, ExtractValues (ReplaceText 제외) |
+| `tpl_Tools` | ✅ 완료 | CheckSelectionType, WaitMs (VBProject 의존 함수 전체 제외) |
+| `tpl_Validation` | ✅ 완료 | EvaluateFormula, SetIfValTrue |
 
 ---
 
@@ -82,3 +82,16 @@
 | `tpl_MsSQL` | `am_DB` | 2026-06-04 |
 | `tpl_MySQL_Sub` (일부) | `am_DB` | 2026-06-04 |
 | `tpl_Access` | `am_DB` | 2026-06-04 |
+| `tpl_Array` | `am_Utils` | 2026-06-05 |
+| `tpl_Check` (일부) | `am_Utils` | 2026-06-05 |
+| `tpl_Code` (일부) | `am_Utils` | 2026-06-05 |
+| `tpl_ExtApp` | `am_Utils` | 2026-06-05 |
+| `tpl_Media` (일부) | `am_Utils` | 2026-06-05 |
+| `tpl_ReplaceText` (일부) | `am_Utils` | 2026-06-05 |
+| `tpl_Tools` (일부) | `am_Utils` | 2026-06-05 |
+| `tpl_Validation` | `am_Utils` | 2026-06-05 |
+| `tpl_Chart` | `am_Excel` | 2026-06-05 |
+| `tpl_ExportFile` | `am_Excel` | 2026-06-05 |
+| `tpl_KeyBoard` | `am_Excel` | 2026-06-05 |
+| `tpl_Mouse` | `am_Excel` | 2026-06-05 |
+| `tpl_Shapes` | `am_Excel` | 2026-06-05 |

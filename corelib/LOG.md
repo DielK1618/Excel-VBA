@@ -19,8 +19,8 @@
 | `am_Table.bas` | `am_Table` | ✅ 완성 | 테이블 CRUD/필터/정렬/검색 |
 | `am_Range.bas` | `am_Range` | ✅ 완성 | |
 | `am_Format.bas` | `am_Format` | ✅ 완성 | 조건부 서식, 유효성 검사 |
-| `am_Excel.bas` | `am_Excel` | ⬜ 스텁 | 차트/버튼/폼/도형 (미이식) |
-| `am_Utils.bas` | `am_Utils` | ⬜ 미작성 | |
+| `am_Excel.bas` | `am_Excel` | ✅ 완성 | tpl_ExportFile/Chart/Shapes/KeyBoard/Mouse 이식 완료 |
+| `am_Utils.bas` | `am_Utils` | ✅ 완성 | tpl_Array/Check/Code/ExtApp/Media/ReplaceText/Tools/Validation 이식 완료 |
 | `am_Error.bas` | `am_Error` | ✅ 완성 | HandleError / WriteLog |
 
 ### cwb_01.xlsm (`cwb/` 폴더)
@@ -135,3 +135,5 @@
 | 2026-06-02 | am_Sheet 보완: SheetLock/SheetUnLock 추가 (Common.cls 재설계, prv_GetUsedRange·prv_FindCellsByColor 내부 구현) |
 | 2026-06-04 | am_Error 신규 작성: HandleError / WriteLog (tpl_Error 이식, cl.* 제거, am_Core.AM_NAME·XlamPath 으로 교체) |
 | 2026-06-04 | am_DB 확장: tpl_MsSQL/MySQL_Sub/Access 이식 완료 — DelExcelRecQuery(wb 인수화), GetFields(센티널 -1), GetFieldAndType/GetFieldNameConnection(ReplaceFields·GetDbInfo 의존성 제거), CreateAccessTable/DeleteAccessTable/CreateAccessTableADOX/DeleteAccessFields 추가 |
+| 2026-06-05 | am_Utils 신규 작성: tpl_Array/Check/Code/ExtApp/Media/ReplaceText/Tools/Validation 이식 — IsRangeMerged 버그 2종 수정(IsSelectionMerged 오타·Selection Is Nothing), GenerateRandomCode 버그 수정(j>maxAttempts), tpl_Procedure·SyncCodeNamesToSheetNames는 VBProject/Trust Center 의존으로 기존 결정대로 제외 |
+| 2026-06-05 | am_Excel 완성: tpl_ExportFile/Chart/Shapes/KeyBoard/Mouse 이식 — xlCSVUTF8→xlCSV(Excel 2010 호환), Call MkFolder→prv_MkFolder(모듈 독립성), SetChartDataRange에 ws 인수 추가, ClickAtPosition 타입 수정(BoolLeft As String→blnLeft As Boolean), prv_WaitMs로 내부 대기 통합, GetMousePosition을 Function→Sub으로 변경 |

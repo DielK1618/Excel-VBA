@@ -35,20 +35,18 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 | `am_Core` | 상수, 프로퍼티, 초기화, DPUpdate/Event/Calculate/WB_Lock |
 | `am_Path` | 경로 토큰 변환, 경로 정규화 |
 | `am_File` | 파일/폴더 생성·삭제·복사·검색·다이얼로그 |
-| `am_DB` | DB 연결·쿼리 실행·스키마·타입 처리·Access 조작 (tpl_MsSQL/MySQL_Sub/Access 이식 완료) |
+| `am_DB` | DB 연결·쿼리 실행·스키마·타입 처리·Access 조작 |
 | `am_Error` | 공통 에러 핸들링, 로그 기록 |
 | `am_Sheet` | 백업, 표시/숨김, 정렬, SheetLock/SheetUnLock |
 | `am_Table` | 테이블 CRUD·필터·정렬·검색 |
 | `am_Range` | FindRange, FindCellsByColor, GetUsedRange |
 | `am_Format` | 조건부 서식, 유효성 검사 |
+| `am_Utils` | 배열·검사·코드생성·날짜·외부앱·도구·수식 유틸리티 |
+| `am_Excel` | 인쇄/내보내기, 차트, 도형, 키보드/마우스 자동화 |
 
 ### 미완성
 
-| 모듈 | 상태 |
-|---|---|
-| `am_Error` | ✅ 완성 (HandleError / WriteLog) |
-| `am_Utils` | ⬜ 미작성 |
-| `am_Excel` | ⬜ 스텁만 있음 |
+없음 — 전체 Phase 완료
 
 ---
 
@@ -59,11 +57,12 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 
 2. **`am_DB` 확장** ✅ 완료 (2026-06-04)
 
-### Phase 3 — am_Utils 신규 ← **바로 다음 작업**
-- 소스: tpl_Array, tpl_Check(일부), tpl_Code(일부), tpl_ExtApp, tpl_ReplaceText(일부), tpl_Tools(일부), tpl_Validation
+### Phase 3 — am_Utils 신규 ✅ 완료 (2026-06-05)
+- 이식: tpl_Array, tpl_Check(일부), tpl_Code(일부), tpl_ExtApp, tpl_Media(일부), tpl_ReplaceText(일부), tpl_Tools(일부), tpl_Validation
+- 제외: tpl_Procedure·SyncCodeNamesToSheetNames (VBProject/Trust Center 의존, 기존 결정 유지)
 
-### Phase 4 — am_Excel 완성
-- 소스: tpl_ExportFile, tpl_Chart, tpl_Shapes, tpl_KeyBoard, tpl_Mouse
+### Phase 4 — am_Excel 완성 ✅ 완료 (2026-06-05)
+- 이식: tpl_ExportFile, tpl_Chart, tpl_Shapes, tpl_KeyBoard, tpl_Mouse
 
 ---
 
