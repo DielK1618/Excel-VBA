@@ -60,10 +60,15 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 
 **바로 다음 작업: tpl_Test.RunAllTests() 실행 및 결과 검증**
 
+### 준비 완료 상태 (2026-06-09 기준)
+
+- `corelib.xlam` 파일 생성 완료 (12개 am_ 모듈 임포트)
+- `cwb_01.xlsm` 파일 생성 완료
+
 ### 테스트 실행 절차
 
-1. cwb_01.xlsm 에 `cwb/tpl_Test.bas` 임포트
-2. `corelib.xlam` 을 같은 폴더에 배치하고 cwb_01.xlsm 열기 (자동 로드)
+1. `corelib.xlam` 과 `cwb_01.xlsm` 을 같은 폴더에 배치
+2. `cwb_01.xlsm` 열기 → `Workbook_Open` 이 자동으로 corelib.xlam 로드
 3. VBE Immediate 창에서 `tpl_Test.RunAllTests` 실행
 4. 출력에서 `FAIL` 항목 확인 → 버그 수정
 
