@@ -21,30 +21,30 @@ Private m_blnReady As Boolean
 ' 목적   : xlam 폴더 경로 반환
 ' 반환   : String - 예) "D:\Tools"
 ' 예시   : am_Core.XlamPath → "D:\Tools"
-Public Property Get XlamPath() As String
+Public Function XlamPath() As String
     XlamPath = ThisWorkbook.Path
-End Property
+End Function
 
 ' 목적   : xlam 전체 파일 경로 반환
 ' 반환   : String - 예) "D:\Tools\corelib.xlam"
 ' 예시   : am_Core.XlamFullName → "D:\Tools\corelib.xlam"
-Public Property Get XlamFullName() As String
+Public Function XlamFullName() As String
     XlamFullName = ThisWorkbook.FullName
-End Property
+End Function
 
 ' 목적   : xlam 버전 반환
 ' 반환   : String - 예) "1.0.0"
 ' 예시   : am_Core.Version → "1.0.0"
-Public Property Get Version() As String
+Public Function Version() As String
     Version = AM_VERSION
-End Property
+End Function
 
 ' 목적   : xlam 초기화 완료 상태 반환
 ' 반환   : Boolean - True: 정상 초기화 / False: 미초기화
 ' 예시   : If am_Core.IsReady Then ...
-Public Property Get IsReady() As Boolean
+Public Function IsReady() As Boolean
     IsReady = m_blnReady
-End Property
+End Function
 
 ' ── 4. 초기화 / 정리 ─────────────────────────────────────────
 

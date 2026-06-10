@@ -206,7 +206,9 @@ Public Sub ExportSheetToCSV(ByVal sht As Worksheet, _
 
     sht.Copy
     Set wbCopy = ActiveWorkbook
+    Application.DisplayAlerts = False
     wbCopy.SaveAs Filename:=strPath & strFileName & ".csv", FileFormat:=xlCSV
+    Application.DisplayAlerts = True
     wbCopy.Close SaveChanges:=False
 
     GoTo CleanUp

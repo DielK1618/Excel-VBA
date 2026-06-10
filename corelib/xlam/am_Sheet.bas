@@ -33,12 +33,14 @@ Public Sub BackupSheet(ByVal strPath As String, _
                   Left(wb.Name, InStrRev(wb.Name, ".") - 1) & "_" & ws.Name & ".xlsx"
     End If
 
+    Application.DisplayAlerts = False
     Select Case prv_GetExt(strFile)
         Case ".xlsx": ActiveWorkbook.SaveAs strPath & strFile, 51
         Case ".xlsm": ActiveWorkbook.SaveAs strPath & strFile, 52
         Case ".csv":  ActiveWorkbook.SaveAs strPath & strFile, 6
         Case ".txt":  ActiveWorkbook.SaveAs strPath & strFile, 4158
     End Select
+    Application.DisplayAlerts = True
 
     ActiveWorkbook.Close False
 

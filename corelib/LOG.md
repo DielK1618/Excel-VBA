@@ -123,6 +123,7 @@
 
 | 날짜 | 내용 |
 |---|---|
+| 2026-06-10 | Application.Run 호환성 버그 수정 및 Test_Range 전체 통과 — am_Core `Property Get` 4개 → `Public Function` 변환(`XlamPath`/`XlamFullName`/`Version`/`IsReady`), am_Path `ReplacePath` MsgBox 제거·`prv_IsDriveAccessible` 신규, am_Sheet.`BackupSheet`·am_Excel.`ExportSheetToCSV` `DisplayAlerts` 래핑 추가, am_Range 스칼라 래퍼 6개 신규(`GetUsedRange_IsValid`/`RowCount`/`ColCount`·`FindRange_IsValid`/`CellValue`·`FindCellsByColor_Count`), tpl_Test 상수명 충돌 수정(`TEST_SHEET`→`TEST_SHEET_NM`)·`Setup_TestSheet` `NumberFormat "@"` 추가·`Test_Range` 전면 재작성 |
 | 2026-06-09 | am_Sheet.GetSheetNames 버그 수정: `Application.WorksheetFunction.Transpose` 제거 → 1차원 배열 직접 반환. tpl_Test.Test_Sheet에서 arrNames(i) 단일 인덱스 접근 시 2D 배열 오류 방지 |
 | 2026-06-08 | tpl_Test 전 모듈 테스트 전면 재작성: Setup/Teardown_TestSheet(자동 시트·테이블 생성·정리), am_Core/Path/File/Utils/Range/Format/Table/Sheet/Excel 전 모듈 커버, RunGetRng 헬퍼(Range 반환 안전처리), prv_CountHiddenSheets/CountVisibleSheets 추가 |
 | 2026-05-21 | 프로젝트 시작, 기본 구조 설계 |

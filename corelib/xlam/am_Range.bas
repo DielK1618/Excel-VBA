@@ -202,3 +202,54 @@ Public Function GetUsedRange(Optional ByVal ws        As Worksheet, _
                                 ws.Cells(lngMaxRow,   lngMaxCol))
 
 End Function
+
+' ══════════════════════════════════════════════════════════
+'  Application.Run 호환 스칼라 래퍼
+'  (Range 반환 함수는 Application.Run 경유 수신 불가)
+' ══════════════════════════════════════════════════════════
+
+' 목적   : GetUsedRange 결과 존재 여부 반환
+' 반환   : Boolean - True: 범위 있음 / False: Nothing
+Public Function GetUsedRange_IsValid(Optional ByVal ws As Worksheet) As Boolean
+    GetUsedRange_IsValid = Not (GetUsedRange(ws) Is Nothing)
+End Function
+
+' 목적   : GetUsedRange 결과의 행 수 반환 (0=Nothing)
+Public Function GetUsedRange_RowCount(Optional ByVal ws As Worksheet) As Long
+    Dim rng As Range
+    Set rng = GetUsedRange(ws)
+    If Not rng Is Nothing Then GetUsedRange_RowCount = rng.Rows.Count
+End Function
+
+' 목적   : GetUsedRange 결과의 열 수 반환 (0=Nothing)
+Public Function GetUsedRange_ColCount(Optional ByVal ws As Worksheet) As Long
+    Dim rng As Range
+    Set rng = GetUsedRange(ws)
+    If Not rng Is Nothing Then GetUsedRange_ColCount = rng.Columns.Count
+End Function
+
+' 목적   : FindRange 결과 존재 여부 반환
+' 반환   : Boolean - True: 찾음 / False: Nothing
+Public Function FindRange_IsValid(ByVal rngFind As Range, _
+                                  ByVal strValue As String, _
+                                  Optional ByVal blnAddRow As Boolean = False) As Boolean
+    FindRange_IsValid = Not (FindRange(rngFind, strValue, blnAddRow) Is Nothing)
+End Function
+
+' 목적   : FindRange 결과 셀 값 반환 ("" = Nothing)
+Public Function FindRange_CellValue(ByVal rngFind As Range, _
+                                    ByVal strValue As String, _
+                                    Optional ByVal blnAddRow As Boolean = False) As String
+    Dim f As Range
+    Set f = FindRange(rngFind, strValue, blnAddRow)
+    If Not f Is Nothing Then FindRange_CellValue = CStr(f.Value)
+End Function
+
+' 목적   : FindCellsByColor 결과 셀 수 반환 (0=Nothing)
+Public Function FindCellsByColor_Count(ByVal lngColor As Long, _
+                                       ByVal rng As Range, _
+                                       Optional ByVal blnUnion As Boolean = True) As Long
+    Dim r As Range
+    Set r = FindCellsByColor(lngColor, rng, blnUnion)
+    If Not r Is Nothing Then FindCellsByColor_Count = r.Cells.Count
+End Function

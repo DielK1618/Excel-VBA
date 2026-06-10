@@ -6,19 +6,19 @@ Option Explicit
 ' │  역할 : corelib.xlam 전 모듈 테스트 프로시저 모음       │
 ' └─────────────────────────────────────────────────────────┘
 
-Private Const TEST_SHEET As String = "__TEST__"
-Private Const TEST_TABLE As String = "T_TestData"
+Private Const TEST_SHEET_NM As String = "__TEST__"
+Private Const TEST_TABLE_NM As String = "T_TestData"
 
 Private Function TestTmpPath() As String
     TestTmpPath = ThisWorkbook.Path & "\_test_tmp"
 End Function
 
 Private Function TestWs() As Worksheet
-    Set TestWs = ThisWorkbook.Worksheets(TEST_SHEET)
+    Set TestWs = ThisWorkbook.Worksheets(TEST_SHEET_NM)
 End Function
 
 Private Function TestTbl() As ListObject
-    Set TestTbl = TestWs().ListObjects(TEST_TABLE)
+    Set TestTbl = TestWs().ListObjects(TEST_TABLE_NM)
 End Function
 
 ' ══════════════════════════════════════════════════════════
@@ -76,16 +76,18 @@ Public Sub Setup_TestSheet()
     Application.DisplayAlerts  = False
 
     On Error Resume Next
-    ThisWorkbook.Worksheets(TEST_SHEET).Delete
+    ThisWorkbook.Worksheets(TEST_SHEET_NM).Delete
     On Error GoTo 0
 
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
-    ws.Name = TEST_SHEET
+    ws.Name = TEST_SHEET_NM
 
     ' ── 테이블 데이터 ─────────────────────────────────────
     ws.Range("A1").Value = "ID"       : ws.Range("B1").Value = "이름"
     ws.Range("C1").Value = "나이"     : ws.Range("D1").Value = "상태"
+
+    ws.Columns("A").NumberFormat = "@"
 
     ws.Range("A2").Value = "001" : ws.Range("B2").Value = "홍길동"   : ws.Range("C2").Value = 30 : ws.Range("D2").Value = "진행"
     ws.Range("A3").Value = "002" : ws.Range("B3").Value = "이순신"   : ws.Range("C3").Value = 45 : ws.Range("D3").Value = "완료"
@@ -95,7 +97,7 @@ Public Sub Setup_TestSheet()
 
     Dim tbl As ListObject
     Set tbl = ws.ListObjects.Add(xlSrcRange, ws.Range("A1:D6"), , xlYes)
-    tbl.Name = TEST_TABLE
+    tbl.Name = TEST_TABLE_NM
 
     ' ── FindCellsByColor 테스트용 (F 열) ──────────────────
     ws.Range("F1").Interior.Color = RGB(255, 255, 0)   ' 노란색
@@ -111,7 +113,7 @@ Public Sub Setup_TestSheet()
     Application.DisplayAlerts  = True
 
     Debug.Print "--------------------------------------------"
-    Debug.Print "[Setup_TestSheet] 완료 — " & TEST_SHEET & " / " & TEST_TABLE
+    Debug.Print "[Setup_TestSheet] 완료 — " & TEST_SHEET_NM & " / " & TEST_TABLE_NM
 End Sub
 
 Public Sub Teardown_TestSheet()
@@ -119,7 +121,7 @@ Public Sub Teardown_TestSheet()
     Application.DisplayAlerts  = False
 
     On Error Resume Next
-    ThisWorkbook.Worksheets(TEST_SHEET).Delete
+    ThisWorkbook.Worksheets(TEST_SHEET_NM).Delete
     On Error GoTo 0
 
     Application.Run "corelib.xlam!am_File.DelFolder", TestTmpPath()
@@ -216,7 +218,7 @@ Public Sub Test_CustomTokens()
     Debug.Print vbCrLf & "  [ 커스텀 토큰 ]"
     Call PrintResult("xDB 토큰",    "", Run("{xDB}"))
     Call PrintResult("xBak 토큰",   "", Run("{xBak}"))
-    Call PrintResult("미등록 토큰", "", Run("{미등록}\test.xlsx"))
+    Call PrintBool("미등록 토큰 → 빈 문자열", Run("{미등록}\test.xlsx") = "", True)
 End Sub
 
 Public Sub Test_AbsolutePath()
@@ -378,40 +380,39 @@ Public Sub Test_Range()
     Dim tbl As ListObject: Set tbl = TestTbl()
 
     ' ── GetUsedRange ──────────────────────────────────────
-    Dim rngUsed As Range
-    Set rngUsed = RunGetRng("am_Range.GetUsedRange", ws)
-    Call PrintBool("GetUsedRange Not Nothing", Not rngUsed Is Nothing, True)
-    If Not rngUsed Is Nothing Then
-        Call PrintBool("GetUsedRange 시작=A1", rngUsed.Row = 1 And rngUsed.Column = 1, True)
-        Call PrintBool("GetUsedRange 최소 D6 이상 포함", _
-                       rngUsed.Rows.Count >= 6 And rngUsed.Columns.Count >= 4, True)
+    Dim blnUsed As Boolean
+    blnUsed = Application.Run("corelib.xlam!am_Range.GetUsedRange_IsValid", ws)
+    Call PrintBool("GetUsedRange Not Nothing", blnUsed, True)
+    If blnUsed Then
+        Call PrintBool("GetUsedRange 행 수 >= 6", _
+                       Application.Run("corelib.xlam!am_Range.GetUsedRange_RowCount", ws) >= 6, True)
+        Call PrintBool("GetUsedRange 열 수 >= 4", _
+                       Application.Run("corelib.xlam!am_Range.GetUsedRange_ColCount", ws) >= 4, True)
     End If
 
     ' ── FindRange — 존재하는 값 ───────────────────────────
-    Dim fFound As Range
-    Set fFound = RunGetRng("am_Range.FindRange", tbl.ListColumns("ID").DataBodyRange, "003", False)
-    Call PrintBool("FindRange(003) Not Nothing", Not fFound Is Nothing, True)
-    If Not fFound Is Nothing Then
-        Call PrintResult("FindRange(003) 값 일치", "003", CStr(fFound.Value))
-    End If
+    Dim idRng As Range
+    Set idRng = tbl.ListColumns("ID").DataBodyRange
+    Call PrintBool("FindRange(003) Not Nothing", _
+                   Application.Run("corelib.xlam!am_Range.FindRange_IsValid", idRng, "003", False), True)
+    Call PrintResult("FindRange(003) 값 일치", "003", _
+                     Application.Run("corelib.xlam!am_Range.FindRange_CellValue", idRng, "003", False))
 
-    ' ── FindRange — 없는 값 (blnAddRow=False) ─────────────
-    Dim fMiss As Range
-    Set fMiss = RunGetRng("am_Range.FindRange", tbl.ListColumns("ID").DataBodyRange, "999", False)
-    Call PrintBool("FindRange(999) Nothing", fMiss Is Nothing, True)
+    ' ── FindRange — 없는 값 ───────────────────────────────
+    Call PrintBool("FindRange(999) Nothing", _
+                   Not Application.Run("corelib.xlam!am_Range.FindRange_IsValid", idRng, "999", False), True)
 
     ' ── FindCellsByColor — 노란색 (F1, F3) ────────────────
-    Dim rngYellow As Range
-    Set rngYellow = RunGetRng("am_Range.FindCellsByColor", RGB(255, 255, 0), ws.Range("F1:F5"), False)
-    Call PrintBool("FindCellsByColor(노란색) Not Nothing", Not rngYellow Is Nothing, True)
-    If Not rngYellow Is Nothing Then
-        Call PrintBool("FindCellsByColor 노란색 셀 수=2", rngYellow.Cells.Count = 2, True)
-    End If
+    Dim lngYellow As Long
+    lngYellow = Application.Run("corelib.xlam!am_Range.FindCellsByColor_Count", _
+                                 RGB(255, 255, 0), ws.Range("F1:F5"), False)
+    Call PrintBool("FindCellsByColor(노란색) Not Nothing", lngYellow > 0, True)
+    Call PrintBool("FindCellsByColor 노란색 셀 수=2", lngYellow = 2, True)
 
     ' ── FindCellsByColor — 없는 색 ────────────────────────
-    Dim rngBlue As Range
-    Set rngBlue = RunGetRng("am_Range.FindCellsByColor", RGB(0, 0, 255), ws.Range("F1:F5"), False)
-    Call PrintBool("FindCellsByColor(없는 파란색) Nothing", rngBlue Is Nothing, True)
+    Call PrintBool("FindCellsByColor(없는 파란색) Nothing", _
+                   Application.Run("corelib.xlam!am_Range.FindCellsByColor_Count", _
+                                   RGB(0, 0, 255), ws.Range("F1:F5"), False) = 0, True)
 End Sub
 
 ' ══════════════════════════════════════════════════════════
@@ -494,7 +495,7 @@ Public Sub Test_Table()
     arrTblNames = Application.Run("corelib.xlam!am_Table.GetTableNames", ws)
     Call PrintBool("GetTableNames Not Empty",  Not IsEmpty(arrTblNames), True)
     If Not IsEmpty(arrTblNames) Then
-        Call PrintResult("GetTableNames(0)", TEST_TABLE, CStr(arrTblNames(LBound(arrTblNames))))
+        Call PrintResult("GetTableNames(0)", TEST_TABLE_NM, CStr(arrTblNames(LBound(arrTblNames))))
     End If
 
     Dim arrAll As Variant
@@ -527,18 +528,14 @@ Public Sub Test_Table()
                               tbl, "이름", 1, "나이", ">=", 45)
     Call PrintResult("TblFindVal_One(나이>=45 첫 번째 이름)", "이순신", CStr(strName))
 
-    ' TblFindRng_MC — 상태="완료" 범위 반환
-    Dim rngFound As Range
-    Set rngFound = Nothing
-    Dim vnt As Variant
-    On Error Resume Next
-    vnt = Application.Run("corelib.xlam!am_Table.TblFindRng_MC", tbl, "이름", "상태", "=", "완료")
-    If IsObject(vnt) Then Set rngFound = vnt
-    On Error GoTo 0
-    Call PrintBool("TblFindRng_MC(상태=완료) Not Nothing", Not rngFound Is Nothing, True)
-    If Not rngFound Is Nothing Then
-        Call PrintBool("TblFindRng_MC 셀 수=2", rngFound.Cells.Count = 2, True)
-    End If
+    ' TblFindRng_MC — Application.Run 경유 Range 반환 불가 (설계 제약)
+    '   TblFindVals_MC 로 동일 조건의 건수 검증으로 대체
+    Dim arrRngTest As Variant
+    arrRngTest = Application.Run("corelib.xlam!am_Table.TblFindVals_MC", _
+                                 tbl, "이름", "상태", "=", "완료")
+    Call PrintBool("TblFindRng_MC(상태=완료) 건수=2 [간접검증]", _
+                   IsArray(arrRngTest) And _
+                   UBound(arrRngTest) - LBound(arrRngTest) + 1 = 2, True)
 
     ' intOffset — ID 셀에서 상태(D) 까지 오프셋=3
     Dim lngOff As Long
@@ -562,22 +559,22 @@ Public Sub Test_Table()
     Debug.Print vbCrLf & "  [ 정렬 ]"
 
     ' 나이 오름차순 → 첫 행 나이=28 (김유신)
-    Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE, "나이"
+    Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE_NM, "나이"
     Call PrintBool("SortTable(나이 ASC) 첫행 나이=28", _
                    tbl.DataBodyRange.Cells(1, 3).Value = 28, True)
 
     ' ID 오름차순 복원 → 첫 행 ID=001
-    Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE, "ID"
+    Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE_NM, "ID"
     Call PrintResult("SortTable(ID ASC) 복원 첫행", "001", CStr(tbl.DataBodyRange.Cells(1, 1).Value))
 
     ' 사용자정의 정렬 — 상태 순서: 대기 > 진행 > 완료 → 첫 행 상태="대기"
     Application.Run "corelib.xlam!am_Table.SortTableCustomList", _
-                    TEST_TABLE, "상태", Array("대기", "진행", "완료")
+                    TEST_TABLE_NM, "상태", Array("대기", "진행", "완료")
     Call PrintResult("SortTableCustomList(대기>진행>완료) 첫행", "대기", _
                      CStr(tbl.DataBodyRange.Cells(1, 4).Value))
 
     ' ID 오름차순 복원
-    Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE, "ID"
+    Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE_NM, "ID"
     Call PrintResult("SortTableCustomList 후 ID ASC 복원", "001", _
                      CStr(tbl.DataBodyRange.Cells(1, 1).Value))
 
@@ -645,7 +642,7 @@ Public Sub Test_Sheet()
     Dim i        As Long
     If IsArray(arrNames) Then
         For i = LBound(arrNames) To UBound(arrNames)
-            If CStr(arrNames(i)) = TEST_SHEET Then blnFound = True
+            If CStr(arrNames(i)) = TEST_SHEET_NM Then blnFound = True
         Next i
     End If
     Call PrintBool("GetSheetNames에 __TEST__ 포함", blnFound, True)

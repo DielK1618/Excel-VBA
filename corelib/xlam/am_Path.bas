@@ -33,6 +33,9 @@ Public Function ReplacePath(ByVal strPath As String, _
 
     If strPath = "" Then Exit Function
 
+    Dim strOriginal As String
+    strOriginal = strPath
+
     ' ── 1. 고정 토큰 치환 ────────────────────────────────────
     strPath = prv_ResolveFixedTokens(strPath, strCwbPath, strCwbFile)
 
@@ -53,11 +56,6 @@ Public Function ReplacePath(ByVal strPath As String, _
 
     ' ── 7. 유효성 검증 및 드라이브 추정 ─────────────────────
     strPath = prv_ValidateAndFixDrive(strPath)
-
-    If strPath = "" Then
-        MsgBox "경로를 찾을 수 없습니다." & vbCrLf & _
-               "입력 경로: " & strPath, vbExclamation, am_Core.AM_NAME
-    End If
 
     ReplacePath = strPath
     Exit Function
@@ -244,7 +242,15 @@ End Function
 ' 목적   : 경로 유효성 검사, 실패 시 A~Z 드라이브 순서로 추정
 Private Function prv_ValidateAndFixDrive(ByVal strPath As String) As String
 
+    ' 경로가 실제로 존재하면 그대로 반환
     If prv_IsValidPath(strPath) Then
+        prv_ValidateAndFixDrive = strPath
+        Exit Function
+    End If
+
+    ' 경로가 없어도 드라이브가 유효하면 그대로 반환
+    ' (토큰 치환 결과로 아직 생성 전인 폴더 경로도 유효 처리)
+    If prv_IsDriveAccessible(strPath) Then
         prv_ValidateAndFixDrive = strPath
         Exit Function
     End If
@@ -252,6 +258,10 @@ Private Function prv_ValidateAndFixDrive(ByVal strPath As String) As String
     Dim strFixed As String
     strFixed = prv_ReplaceWithCwbDrive(strPath)
     If prv_IsValidPath(strFixed) Then
+        prv_ValidateAndFixDrive = strFixed
+        Exit Function
+    End If
+    If prv_IsDriveAccessible(strFixed) Then
         prv_ValidateAndFixDrive = strFixed
         Exit Function
     End If
@@ -263,6 +273,18 @@ Private Function prv_ValidateAndFixDrive(ByVal strPath As String) As String
     End If
 
     prv_ValidateAndFixDrive = ""
+
+End Function
+
+' 목적   : 경로의 드라이브 루트가 접근 가능한지 확인 (경로 자체 존재 여부 무관)
+Private Function prv_IsDriveAccessible(ByVal strPath As String) As Boolean
+
+    If Len(strPath) < 3 Then Exit Function
+    If Mid(strPath, 2, 2) <> ":\" Then Exit Function
+
+    On Error Resume Next
+    prv_IsDriveAccessible = (Dir(Left(strPath, 3), vbDirectory) <> "")
+    On Error GoTo 0
 
 End Function
 
