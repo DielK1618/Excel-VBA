@@ -145,6 +145,7 @@ Public Sub RunAllTests()
     Call Test_Path
     Call Test_File
     Call Test_Utils
+    Call Test_Error
 
     Call Setup_TestSheet
     Call Test_Range
@@ -366,6 +367,51 @@ Public Sub Test_Utils_Formula()
     Call PrintBool("EvaluateFormula(1=1)",               Application.Run("corelib.xlam!am_Utils.EvaluateFormula", "1=1"),               True)
     Call PrintBool("EvaluateFormula(1=2)",               Application.Run("corelib.xlam!am_Utils.EvaluateFormula", "1=2"),               False)
     Call PrintBool("EvaluateFormula(=LEN(""abc"")>0)",   Application.Run("corelib.xlam!am_Utils.EvaluateFormula", "=LEN(""abc"")>0"),   True)
+End Sub
+
+' ══════════════════════════════════════════════════════════
+'  am_Error 테스트
+' ══════════════════════════════════════════════════════════
+
+Public Sub Test_Error()
+    Debug.Print vbCrLf & "▶ am_Error 테스트"
+
+    ' ── HandleError (MsgBox 없이) ──────────────────────────
+    Application.Run "corelib.xlam!am_Error.HandleError", "Test_Error", "테스트 추가정보", False
+    Call PrintBool("HandleError(blnShowMessage=False) 오류없이 실행", True, True)
+
+    ' ── WriteLog — 비활성화 상태 무동작 확인 ───────────────
+    Dim strLogFolder As String
+    Dim strLogFile   As String
+    strLogFolder = Application.Run("corelib.xlam!am_Core.XlamPath") & "\Logs\"
+    strLogFile = strLogFolder & "Log_" & Format(Date, "yyyymm") & ".txt"
+
+    On Error Resume Next
+    Kill strLogFile
+    On Error GoTo 0
+
+    Application.Run "corelib.xlam!am_Error.WriteLog", "테스트 메시지", "TEST"
+    Call PrintBool("WriteLog(비활성화) — 파일 미생성 확인", Dir(strLogFile) = "", True)
+
+    ' ── SetLogEnabled / GetLogEnabled / WriteLog 활성화 확인
+    Application.Run "corelib.xlam!am_Error.SetLogEnabled", True
+    Call PrintBool("GetLogEnabled — True 반환 확인", _
+                   Application.Run("corelib.xlam!am_Error.GetLogEnabled"), True)
+
+    Application.Run "corelib.xlam!am_Error.WriteLog", "테스트 메시지", "TEST"
+    Application.Run "corelib.xlam!am_Error.SetLogEnabled", False
+    Call PrintBool("WriteLog(활성화) — 로그 파일 생성 확인", Dir(strLogFile) <> "", True)
+
+    Call PrintBool("GetLogEnabled — False 복원 확인", _
+                   Not Application.Run("corelib.xlam!am_Error.GetLogEnabled"), True)
+
+    ' ── 정리 ─────────────────────────────────────────────
+    On Error Resume Next
+    Kill strLogFile
+    RmDir strLogFolder
+    On Error GoTo 0
+    Call PrintBool("WriteLog — 정리 후 Logs 폴더 제거 확인", _
+                   Dir(strLogFolder, vbDirectory) = "", True)
 End Sub
 
 ' ══════════════════════════════════════════════════════════

@@ -6,8 +6,26 @@ Option Explicit
 ' │  역할 : 공통 에러 핸들링, 로그 파일 기록               │
 ' └─────────────────────────────────────────────────────────┘
 
-' ── 1. 상수 선언 ─────────────────────────────────────────────
-Public Const ENABLE_ERROR_LOG As Boolean = False   ' 운영 시 True
+' ── 1. 모듈 변수 선언 ─────────────────────────────────────────
+Private m_blnLogEnabled As Boolean   ' 기본: False (운영 시 SetLogEnabled True 호출)
+
+' ══════════════════════════════════════════════════════════
+'  로그 활성화 제어
+' ══════════════════════════════════════════════════════════
+
+' 목적   : 로그 기록 활성화 여부 설정
+' 인수   : blnEnabled - True: 로그 기록 / False: 무동작 (기본)
+' 예시   : am_Error.SetLogEnabled True
+Public Sub SetLogEnabled(ByVal blnEnabled As Boolean)
+    m_blnLogEnabled = blnEnabled
+End Sub
+
+' 목적   : 로그 기록 활성화 여부 반환
+' 반환   : Boolean - True: 활성 / False: 비활성
+' 예시   : If am_Error.GetLogEnabled Then ...
+Public Function GetLogEnabled() As Boolean
+    GetLogEnabled = m_blnLogEnabled
+End Function
 
 ' ══════════════════════════════════════════════════════════
 '  에러 핸들링
@@ -35,7 +53,7 @@ Public Sub HandleError(Optional ByVal strProcName    As String  = "", _
         MsgBox strErrMsg, vbCritical, am_Core.AM_NAME
     End If
 
-    If ENABLE_ERROR_LOG Then
+    If m_blnLogEnabled Then
         strLogMsg = strProcName & " | " & _
                     Err.Number & " | " & _
                     Err.Description & " | " & _
@@ -54,7 +72,7 @@ End Sub
 Public Sub WriteLog(ByVal strMessage As String, _
                     Optional ByVal strType As String = "INFO")
 
-    If Not ENABLE_ERROR_LOG Then Exit Sub
+    If Not m_blnLogEnabled Then Exit Sub
 
     Dim strLogFolder As String
     Dim strLogFile   As String
