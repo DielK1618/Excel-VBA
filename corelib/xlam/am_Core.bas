@@ -43,6 +43,7 @@ End Function
 ' 반환   : Boolean - True: 정상 초기화 / False: 미초기화
 ' 예시   : If am_Core.IsReady Then ...
 Public Function IsReady() As Boolean
+    If Not m_blnReady Then Call Initialize()
     IsReady = m_blnReady
 End Function
 

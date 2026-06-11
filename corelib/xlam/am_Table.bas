@@ -371,9 +371,9 @@ Public Sub AutoTableFilter_Arr(ByVal tbl As ListObject, _
 
     On Error Resume Next
 
-    Dim intField       As Integer
-    Dim arrWildCards() As String
-    Dim i              As Long
+    Dim intField    As Integer
+    Dim arrWildCards As Variant
+    Dim i           As Long
 
     intField = tbl.ListColumns(fieldName).Index
 

@@ -138,16 +138,17 @@ Public Sub MkFolder(ByVal strPath As String)
 
 End Sub
 
-' 목적   : 폴더 삭제 (내부 파일 포함)
+' 목적   : 폴더 삭제 (내부 파일·하위 폴더 포함, 재귀)
 ' 인수   : strPath - 삭제할 폴더 경로
 ' 예시   : DelFolder("C:\TestFolder")
 Public Sub DelFolder(ByVal strPath As String)
-    If Dir(strPath, vbDirectory) <> "" Then
-        On Error Resume Next
-        Kill strPath & "\*.*"
-        RmDir strPath
-        On Error GoTo 0
-    End If
+    If Dir(strPath, vbDirectory) = "" Then Exit Sub
+    On Error Resume Next
+    Dim objFSO As Object
+    Set objFSO = CreateObject("Scripting.FileSystemObject")
+    objFSO.DeleteFolder strPath, True
+    Set objFSO = Nothing
+    On Error GoTo 0
 End Sub
 
 ' 목적   : 파일 삭제

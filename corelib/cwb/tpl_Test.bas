@@ -53,7 +53,6 @@ Private Function Run(ByVal strPath As String) As String
                           ThisWorkbook.FullName)
 End Function
 
-' Application.Run 에서 Range 반환 함수 호출 시 Nothing 안전 처리
 Private Function RunGetRng(ByVal strFuncPath As String, _
                            ParamArray args() As Variant) As Range
     Dim vnt As Variant
@@ -247,9 +246,9 @@ End Sub
 
 Public Sub Test_EdgeCases()
     Debug.Print vbCrLf & "  [ 엣지 케이스 ]"
-    Call PrintResult("빈 문자열",      "", Run(""))
+    Call PrintBool("빈 문자열 → 빈 문자열 반환",   Run("") = "",                  True)
     Call PrintResult("토큰만",         "", Run("{cPath}"))
-    Call PrintResult("잘못된 경로",    "", Run("이건경로가아닙니다"))
+    Call PrintBool("잘못된 경로 → 빈 문자열 반환", Run("이건경로가아닙니다") = "", True)
     Call PrintResult("토큰 연속 사용", "", Run("{cPath}{xPath}"))
 End Sub
 
@@ -295,7 +294,7 @@ Public Sub Test_Utils()
     Call Test_Utils_Formula
 End Sub
 
-Private Sub Test_Utils_Array()
+Public Sub Test_Utils_Array()
     Debug.Print vbCrLf & "  [ 배열 ]"
 
     Dim arrResult  As Variant
@@ -314,7 +313,7 @@ Private Sub Test_Utils_Array()
                    Application.Run("corelib.xlam!am_Utils.IsArrayEmpty", arrResult), False)
 End Sub
 
-Private Sub Test_Utils_Check()
+Public Sub Test_Utils_Check()
     Debug.Print vbCrLf & "  [ 검사 ]"
 
     Call PrintBool("IsValidFileName(유효)", _
@@ -327,7 +326,7 @@ Private Sub Test_Utils_Check()
                    Application.Run("corelib.xlam!am_Utils.IsCells", ActiveSheet.Range("A1")), True)
 End Sub
 
-Private Sub Test_Utils_Code()
+Public Sub Test_Utils_Code()
     Debug.Print vbCrLf & "  [ 코드 생성 ]"
 
     Dim colIDs As New Collection
@@ -344,7 +343,7 @@ Private Sub Test_Utils_Code()
     Call PrintBool("GenerateRandomCode 길이=6", Len(strCode) = 6, True)
 End Sub
 
-Private Sub Test_Utils_Date()
+Public Sub Test_Utils_Date()
     Debug.Print vbCrLf & "  [ 날짜·정규식 ]"
 
     Dim dblSerial As Double
@@ -361,7 +360,7 @@ Private Sub Test_Utils_Date()
     End If
 End Sub
 
-Private Sub Test_Utils_Formula()
+Public Sub Test_Utils_Formula()
     Debug.Print vbCrLf & "  [ 수식·유효성 ]"
 
     Call PrintBool("EvaluateFormula(1=1)",               Application.Run("corelib.xlam!am_Utils.EvaluateFormula", "1=1"),               True)
@@ -421,56 +420,52 @@ End Sub
 
 Public Sub Test_Format()
     Debug.Print vbCrLf & "▶ am_Format 테스트"
+    Call Test_Format_CF
+    Call Test_Format_Validation
+End Sub
 
-    Dim ws   As Worksheet : Set ws = TestWs()
-    Dim rng  As Range
-    Dim rngG As Range     : Set rngG = ws.Range("G1:G5")   ' 숫자 10~50
-    Dim rngH As Range     : Set rngH = ws.Range("H1")      ' 유효성 테스트용
+' ── [1/2] 조건부 서식 ────────────────────────────────────
+Public Sub Test_Format_CF()
+    Debug.Print vbCrLf & "  [ 조건부 서식 ]"
 
-    ' ── ConditionalFormattingFormula ──────────────────────
+    Dim rngG As Range : Set rngG = TestWs().Range("G1:G5")
+
     rngG.FormatConditions.Delete
 
     Application.Run "corelib.xlam!am_Format.ConditionalFormattingFormula", _
-                    rngG, "=G1>25", _
-                    RGB(255, 0, 0)   ' lngFontColor
+                    rngG, "=G1>25", RGB(255, 0, 0)
+    Call PrintBool("CF Formula 추가 Count >= 1", rngG.FormatConditions.Count >= 1, True)
 
-    Call PrintBool("CF 추가 후 FormatConditions.Count >= 1", _
-                   rngG.FormatConditions.Count >= 1, True)
-
-    ' ── ClearConditionalFormatting ────────────────────────
     Application.Run "corelib.xlam!am_Format.ClearConditionalFormatting", rngG
-    Call PrintBool("ClearConditionalFormatting 후 Count=0", _
-                   rngG.FormatConditions.Count = 0, True)
+    Call PrintBool("ClearCF 후 Count=0", rngG.FormatConditions.Count = 0, True)
 
-    ' ── ConditionalFormattingColorScale (2단) ─────────────
     Application.Run "corelib.xlam!am_Format.ConditionalFormattingColorScale", _
                     rngG, RGB(255, 0, 0), RGB(0, 255, 0)
-    Call PrintBool("ColorScale(2단) 추가 Count >= 1", _
-                   rngG.FormatConditions.Count >= 1, True)
+    Call PrintBool("ColorScale(2단) 추가 Count >= 1", rngG.FormatConditions.Count >= 1, True)
     Application.Run "corelib.xlam!am_Format.ClearConditionalFormatting", rngG
 
-    ' ── ConditionalFormattingDataBar ─────────────────────
     Application.Run "corelib.xlam!am_Format.ConditionalFormattingDataBar", _
                     rngG, RGB(0, 112, 192)
-    Call PrintBool("DataBar 추가 Count >= 1", _
-                   rngG.FormatConditions.Count >= 1, True)
+    Call PrintBool("DataBar 추가 Count >= 1", rngG.FormatConditions.Count >= 1, True)
     Application.Run "corelib.xlam!am_Format.ClearConditionalFormatting", rngG
+End Sub
 
-    ' ── ValidationList ────────────────────────────────────
+' ── [2/2] 유효성 검사 ────────────────────────────────────
+Public Sub Test_Format_Validation()
+    Debug.Print vbCrLf & "  [ 유효성 검사 ]"
+
+    Dim rngH As Range : Set rngH = TestWs().Range("H1")
+
     rngH.Validation.Delete
     Application.Run "corelib.xlam!am_Format.ValidationList", _
                     rngH, Array("승인", "반려", "대기")
-
-    ' ValidationList 적용 후 am_Utils.GetValidationType 로 교차 검증
     Call PrintResult("ValidationList 후 GetValidationType", "목록", _
                      Application.Run("corelib.xlam!am_Utils.GetValidationType", rngH))
 
-    ' ── ClearValidation ───────────────────────────────────
     Application.Run "corelib.xlam!am_Format.ClearValidation", rngH
     Call PrintResult("ClearValidation 후 GetValidationType", "없음", _
                      Application.Run("corelib.xlam!am_Utils.GetValidationType", rngH))
 
-    ' ── SetValidation (목록형) ────────────────────────────
     Application.Run "corelib.xlam!am_Format.SetValidation", _
                     rngH, "A,B,C", "", xlValidateList
     Call PrintResult("SetValidation(목록) 후 GetValidationType", "목록", _
@@ -480,16 +475,24 @@ End Sub
 
 ' ══════════════════════════════════════════════════════════
 '  am_Table 테스트  (Setup_TestSheet 완료 후 실행)
+'  실행 순서: Read → Find → Filter → Sort → Edit
 ' ══════════════════════════════════════════════════════════
 
 Public Sub Test_Table()
     Debug.Print vbCrLf & "▶ am_Table 테스트"
+    Call Test_Table_Read
+    Call Test_Table_Find
+    Call Test_Table_Filter
+    Call Test_Table_Sort
+    Call Test_Table_Edit
+End Sub
+
+' ── [1/5] 조회 ────────────────────────────────────────────
+Public Sub Test_Table_Read()
+    Debug.Print vbCrLf & "  [ 조회 ]"
 
     Dim ws  As Worksheet : Set ws  = TestWs()
     Dim tbl As ListObject: Set tbl = TestTbl()
-
-    ' ── 1. 조회 (Read-Only) ───────────────────────────────
-    Debug.Print vbCrLf & "  [ 조회 ]"
 
     Dim arrTblNames As Variant
     arrTblNames = Application.Run("corelib.xlam!am_Table.GetTableNames", ws)
@@ -511,25 +514,25 @@ Public Sub Test_Table()
     arrWidths = Application.Run("corelib.xlam!am_Table.GetTableColumnsWidth", tbl)
     Call PrintBool("GetTableColumnsWidth 열 수=4", _
                    IsArray(arrWidths) And UBound(arrWidths) - LBound(arrWidths) + 1 = 4, True)
+End Sub
 
-    ' ── 2. 검색 ──────────────────────────────────────────
+' ── [2/5] 검색 ────────────────────────────────────────────
+Public Sub Test_Table_Find()
     Debug.Print vbCrLf & "  [ 검색 ]"
 
-    ' TblFindVals_MC — 상태="진행" 인 ID 목록
+    Dim tbl As ListObject: Set tbl = TestTbl()
+
     Dim arrFound As Variant
     arrFound = Application.Run("corelib.xlam!am_Table.TblFindVals_MC", _
                                tbl, "ID", "상태", "=", "진행")
     Call PrintBool("TblFindVals_MC(상태=진행) 결과 2건", _
                    IsArray(arrFound) And UBound(arrFound) - LBound(arrFound) + 1 = 2, True)
 
-    ' TblFindVal_One — 나이>=45 첫 번째 이름
     Dim strName As String
     strName = Application.Run("corelib.xlam!am_Table.TblFindVal_One", _
                               tbl, "이름", 1, "나이", ">=", 45)
     Call PrintResult("TblFindVal_One(나이>=45 첫 번째 이름)", "이순신", CStr(strName))
 
-    ' TblFindRng_MC — Application.Run 경유 Range 반환 불가 (설계 제약)
-    '   TblFindVals_MC 로 동일 조건의 건수 검증으로 대체
     Dim arrRngTest As Variant
     arrRngTest = Application.Run("corelib.xlam!am_Table.TblFindVals_MC", _
                                  tbl, "이름", "상태", "=", "완료")
@@ -537,14 +540,17 @@ Public Sub Test_Table()
                    IsArray(arrRngTest) And _
                    UBound(arrRngTest) - LBound(arrRngTest) + 1 = 2, True)
 
-    ' intOffset — ID 셀에서 상태(D) 까지 오프셋=3
     Dim lngOff As Long
     lngOff = Application.Run("corelib.xlam!am_Table.intOffset", _
                              tbl.ListColumns("ID").DataBodyRange.Cells(1, 1), "상태")
     Call PrintBool("intOffset(ID→상태)=3", lngOff = 3, True)
+End Sub
 
-    ' ── 3. 필터 (원상복귀 필수) ──────────────────────────
+' ── [3/5] 필터 ────────────────────────────────────────────
+Public Sub Test_Table_Filter()
     Debug.Print vbCrLf & "  [ 필터 ]"
+
+    Dim tbl As ListObject: Set tbl = TestTbl()
 
     Application.Run "corelib.xlam!am_Table.AutoTableFilter", tbl, "상태", "진행"
     Call PrintBool("AutoTableFilter 필터 적용", tbl.AutoFilter.FilterMode, True)
@@ -554,32 +560,36 @@ Public Sub Test_Table()
     Application.Run "corelib.xlam!am_Table.AutoTableFilter_Arr", tbl, "상태", Array("완료", "대기")
     Application.Run "corelib.xlam!am_Table.ClearFiltersInTable", tbl
     Call PrintBool("AutoTableFilter_Arr + Clear → FilterMode=False", Not tbl.AutoFilter.FilterMode, True)
+End Sub
 
-    ' ── 4. 정렬 (ID 기준 복원) ────────────────────────────
+' ── [4/5] 정렬 ────────────────────────────────────────────
+Public Sub Test_Table_Sort()
     Debug.Print vbCrLf & "  [ 정렬 ]"
 
-    ' 나이 오름차순 → 첫 행 나이=28 (김유신)
+    Dim tbl As ListObject: Set tbl = TestTbl()
+
     Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE_NM, "나이"
     Call PrintBool("SortTable(나이 ASC) 첫행 나이=28", _
                    tbl.DataBodyRange.Cells(1, 3).Value = 28, True)
 
-    ' ID 오름차순 복원 → 첫 행 ID=001
     Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE_NM, "ID"
     Call PrintResult("SortTable(ID ASC) 복원 첫행", "001", CStr(tbl.DataBodyRange.Cells(1, 1).Value))
 
-    ' 사용자정의 정렬 — 상태 순서: 대기 > 진행 > 완료 → 첫 행 상태="대기"
     Application.Run "corelib.xlam!am_Table.SortTableCustomList", _
                     TEST_TABLE_NM, "상태", Array("대기", "진행", "완료")
     Call PrintResult("SortTableCustomList(대기>진행>완료) 첫행", "대기", _
                      CStr(tbl.DataBodyRange.Cells(1, 4).Value))
 
-    ' ID 오름차순 복원
     Application.Run "corelib.xlam!am_Table.SortTable", TEST_TABLE_NM, "ID"
     Call PrintResult("SortTableCustomList 후 ID ASC 복원", "001", _
                      CStr(tbl.DataBodyRange.Cells(1, 1).Value))
+End Sub
 
-    ' ── 5. 값 변경 (원상복귀 필수) ───────────────────────
+' ── [5/5] 값 변경 / 행·열 추가삭제 ───────────────────────
+Public Sub Test_Table_Edit()
     Debug.Print vbCrLf & "  [ 값 변경 ]"
+
+    Dim tbl As ListObject: Set tbl = TestTbl()
 
     Application.Run "corelib.xlam!am_Table.ChangeTableValue", "003", "상태", "수정됨", tbl
     Call PrintBool("ChangeTableValue(003 상태→수정됨)", _
@@ -589,7 +599,6 @@ Public Sub Test_Table()
     Call PrintBool("ChangeTableValue 복원(수정됨→진행)", _
                    CStr(tbl.ListColumns("상태").DataBodyRange.Cells(3, 1).Value) = "진행", True)
 
-    ' ── 6. 행 추가 / 삭제 ────────────────────────────────
     Debug.Print vbCrLf & "  [ 행 추가·삭제 ]"
 
     Dim lngBefore As Long
@@ -599,7 +608,6 @@ Public Sub Test_Table()
     Call PrintBool("AddTableRows(1) 후 행 수=" & lngBefore + 1, _
                    tbl.DataBodyRange.Rows.Count = lngBefore + 1, True)
 
-    ' 추가된 행에 삭제 식별값 입력
     tbl.DataBodyRange.Cells(tbl.DataBodyRange.Rows.Count, 1).Value = "DEL"
     tbl.DataBodyRange.Cells(tbl.DataBodyRange.Rows.Count, 4).Value = "삭제예정"
 
@@ -607,7 +615,6 @@ Public Sub Test_Table()
     Call PrintBool("DelTableFilteredRows(상태=삭제예정) 후 행 수 복원", _
                    tbl.DataBodyRange.Rows.Count = lngBefore, True)
 
-    ' ── 7. 열 추가 / 삭제 ────────────────────────────────
     Debug.Print vbCrLf & "  [ 열 추가·삭제 ]"
 
     Dim lngColBefore As Long
@@ -628,16 +635,23 @@ End Sub
 
 Public Sub Test_Sheet()
     Debug.Print vbCrLf & "▶ am_Sheet 테스트"
+    Call Test_Sheet_Visible
+    Call Test_Sheet_Sort
+    Call Test_Sheet_Backup
+    Call Test_Sheet_Lock
+End Sub
+
+' ── [1/4] 시트명 조회 / 표시·숨김 ───────────────────────
+Public Sub Test_Sheet_Visible()
+    Debug.Print vbCrLf & "  [ 시트 조회·표시 ]"
 
     Dim ws  As Worksheet : Set ws  = TestWs()
     Dim wb  As Workbook  : Set wb  = ThisWorkbook
 
-    ' ── GetSheetNames ─────────────────────────────────────
     Dim arrNames As Variant
     arrNames = Application.Run("corelib.xlam!am_Sheet.GetSheetNames", wb)
     Call PrintBool("GetSheetNames Not Empty", IsArray(arrNames), True)
 
-    ' __TEST__ 이 목록에 포함되는지 확인
     Dim blnFound As Boolean
     Dim i        As Long
     If IsArray(arrNames) Then
@@ -647,26 +661,27 @@ Public Sub Test_Sheet()
     End If
     Call PrintBool("GetSheetNames에 __TEST__ 포함", blnFound, True)
 
-    ' ── VisibleAllSheets ──────────────────────────────────
     Application.Run "corelib.xlam!am_Sheet.VisibleAllSheets", wb
-    Call PrintBool("VisibleAllSheets — 숨김 시트=0", _
-                   prv_CountHiddenSheets(wb) = 0, True)
+    Call PrintBool("VisibleAllSheets — 숨김 시트=0", prv_CountHiddenSheets(wb) = 0, True)
 
-    ' ── HideAllSheetsExceptOne → VisibleAllSheets 복원 ────
     Application.Run "corelib.xlam!am_Sheet.HideAllSheetsExceptOne", ws, wb
-    Call PrintBool("HideAllSheetsExceptOne — 보이는 시트=1", _
-                   prv_CountVisibleSheets(wb) = 1, True)
+    Call PrintBool("HideAllSheetsExceptOne — 보이는 시트=1", prv_CountVisibleSheets(wb) = 1, True)
 
     Application.Run "corelib.xlam!am_Sheet.VisibleAllSheets", wb
-    Call PrintBool("VisibleAllSheets 복원", _
-                   prv_CountHiddenSheets(wb) = 0, True)
+    Call PrintBool("VisibleAllSheets 복원", prv_CountHiddenSheets(wb) = 0, True)
+End Sub
 
-    ' ── SortSheets ────────────────────────────────────────
-    ' 현재 시트 순서 저장 → 역순 배열로 재정렬 → 원순서 복원
+' ── [2/4] 시트 순서 정렬 ─────────────────────────────────
+Public Sub Test_Sheet_Sort()
+    Debug.Print vbCrLf & "  [ 시트 정렬 ]"
+
+    Dim wb As Workbook : Set wb = ThisWorkbook
+
     Dim arrOrigOrder As Variant
     arrOrigOrder = Application.Run("corelib.xlam!am_Sheet.GetSheetNames", wb)
 
     Dim arrReverse() As Variant
+    Dim i            As Long
     ReDim arrReverse(LBound(arrOrigOrder) To UBound(arrOrigOrder))
     For i = LBound(arrOrigOrder) To UBound(arrOrigOrder)
         arrReverse(i) = arrOrigOrder(UBound(arrOrigOrder) - i + LBound(arrOrigOrder))
@@ -679,8 +694,14 @@ Public Sub Test_Sheet()
     Application.Run "corelib.xlam!am_Sheet.SortSheets", wb, arrOrigOrder
     Call PrintBool("SortSheets 원순서 복원 확인", _
                    wb.Sheets(1).Name = CStr(arrOrigOrder(LBound(arrOrigOrder))), True)
+End Sub
 
-    ' ── BackupSheet ───────────────────────────────────────
+' ── [3/4] 백업 ───────────────────────────────────────────
+Public Sub Test_Sheet_Backup()
+    Debug.Print vbCrLf & "  [ 백업 ]"
+
+    Dim ws       As Worksheet : Set ws = TestWs()
+    Dim wb       As Workbook  : Set wb = ThisWorkbook
     Dim strBakPath As String
     strBakPath = TestTmpPath() & "\backup"
 
@@ -688,13 +709,17 @@ Public Sub Test_Sheet()
     Call PrintBool("BackupSheet — 백업 파일 생성 확인", _
                    Dir(strBakPath & "\Test_Backup.xlsx") <> "", True)
 
-    ' ── BackupWorkbook ────────────────────────────────────
     Application.Run "corelib.xlam!am_Sheet.BackupWorkbook", strBakPath, wb, "WB_Backup.xlsm"
     Call PrintBool("BackupWorkbook — 백업 파일 생성 확인", _
                    Dir(strBakPath & "\WB_Backup.xlsm") <> "", True)
+End Sub
 
-    ' ── SheetLock / SheetUnLock ───────────────────────────
-    ' SheetLock 전 배경색 없는 셀 만들기 (B2에 배경 없음 → 입력 가능 셀)
+' ── [4/4] 시트 보호 ──────────────────────────────────────
+Public Sub Test_Sheet_Lock()
+    Debug.Print vbCrLf & "  [ 시트 보호 ]"
+
+    Dim ws As Worksheet : Set ws = TestWs()
+
     ws.Range("B2").Interior.ColorIndex = xlNone
 
     Application.Run "corelib.xlam!am_Sheet.SheetLock", ws, "test1234"
@@ -733,11 +758,9 @@ Public Sub Test_Excel()
 
     Dim ws As Worksheet : Set ws = TestWs()
 
-    ' ── SetPrintPage (다이얼로그 없음, 설정만) ────────────
     Application.Run "corelib.xlam!am_Excel.SetPrintPage", ws
     Call PrintBool("SetPrintPage — PrintArea 설정됨", ws.PageSetup.PrintArea <> "", True)
 
-    ' ── ExportSheetToCSV ──────────────────────────────────
     Dim strCsvPath As String
     strCsvPath = TestTmpPath() & "\export"
 
@@ -745,7 +768,6 @@ Public Sub Test_Excel()
     Call PrintBool("ExportSheetToCSV — CSV 파일 생성 확인", _
                    Dir(strCsvPath & "\test_export.csv") <> "", True)
 
-    ' ── ExportPDF ─────────────────────────────────────────
     Dim strPdfPath As String
     strPdfPath = TestTmpPath() & "\export\test_export.pdf"
 

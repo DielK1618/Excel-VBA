@@ -123,6 +123,12 @@
 
 | 날짜 | 내용 |
 |---|---|
+| 2026-06-11 | 전 모듈 테스트 완료 — am_Core/Path/File/Utils/Range/Format/Table/Sheet/Excel 전체 OK |
+| 2026-06-11 | am_Core.IsReady 버그 수정: VBE 리셋 후 m_blnReady=False 유지 → lazy-init(미초기화 시 Initialize() 자동 호출)으로 해결 |
+| 2026-06-11 | am_Table.AutoTableFilter_Arr 버그 수정: arrWildCards() As String → As Variant (Application.Run Variant 배열 수신 오류 방지) |
+| 2026-06-11 | am_File.DelFolder 버그 수정: Kill+RmDir → FSO.DeleteFolder(True) 재귀 삭제 (중첩 폴더 미삭제 문제 해결) |
+| 2026-06-11 | tpl_Test.Test_EdgeCases 수정: 빈 문자열·잘못된 경로 케이스 PrintResult("","") → PrintBool(=""확인) 로 변경 |
+| 2026-06-11 | am_Sheet.BackupWorkbook 버그 수정: prv_MkFolder 호출 누락 — 폴더 없을 때 SaveCopyAs 실패 방지 |
 | 2026-06-10 | Application.Run 호환성 버그 수정 및 Test_Range 전체 통과 — am_Core `Property Get` 4개 → `Public Function` 변환(`XlamPath`/`XlamFullName`/`Version`/`IsReady`), am_Path `ReplacePath` MsgBox 제거·`prv_IsDriveAccessible` 신규, am_Sheet.`BackupSheet`·am_Excel.`ExportSheetToCSV` `DisplayAlerts` 래핑 추가, am_Range 스칼라 래퍼 6개 신규(`GetUsedRange_IsValid`/`RowCount`/`ColCount`·`FindRange_IsValid`/`CellValue`·`FindCellsByColor_Count`), tpl_Test 상수명 충돌 수정(`TEST_SHEET`→`TEST_SHEET_NM`)·`Setup_TestSheet` `NumberFormat "@"` 추가·`Test_Range` 전면 재작성 |
 | 2026-06-09 | am_Sheet.GetSheetNames 버그 수정: `Application.WorksheetFunction.Transpose` 제거 → 1차원 배열 직접 반환. tpl_Test.Test_Sheet에서 arrNames(i) 단일 인덱스 접근 시 2D 배열 오류 방지 |
 | 2026-06-08 | tpl_Test 전 모듈 테스트 전면 재작성: Setup/Teardown_TestSheet(자동 시트·테이블 생성·정리), am_Core/Path/File/Utils/Range/Format/Table/Sheet/Excel 전 모듈 커버, RunGetRng 헬퍼(Range 반환 안전처리), prv_CountHiddenSheets/CountVisibleSheets 추가 |
