@@ -77,12 +77,15 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 | 항목 | 결과 |
 |---|---|
 | `GetSheetNames` 2D 배열 버그 | ✅ 수정 완료 — `Transpose` 제거, 1D 배열 직접 반환 (2026-06-09) |
+| Property Get via Application.Run | ✅ 수정 완료 — `am_Core` Property Get 4개 → Public Function 변환 (2026-06-10) |
+| `am_Range` 스칼라 래퍼 신규 | ✅ 추가 완료 — `GetUsedRange_IsValid/RowCount/ColCount`, `FindRange_IsValid/CellValue`, `FindCellsByColor_Count` (2026-06-10) |
+| `Test_Range` 전체 통과 확인 | ✅ 런타임 검증 완료 (2026-06-10) |
+| `BackupWorkbook` 폴더 미생성 버그 | ✅ 수정 완료 — `prv_MkFolder` 호출 추가 (2026-06-11) |
 
 ### 런타임 확인 필요 항목
 
 | 항목 | 확인 포인트 |
 |---|---|
-| Property Get via Application.Run | `am_Core.XlamPath` 등 Property Get 호출 가능 여부 (이론상 동작, 런타임 확인 필요) |
 | `SortTable` / `SortTableCustomList` | `Range("T_TestData")` 가 cwb_01.xlsm 의 테이블을 참조하는지 확인 (active WB 기준이므로 동작 예상) |
 | `BackupSheet` 활성 워크북 변경 | ws.Copy 후 ActiveWorkbook 타이밍 — 코드 구조상 정상, 런타임 확인 필요 |
 | `am_Error` 테스트 없음 | `ENABLE_ERROR_LOG=False` 기본값으로 WriteLog 무동작 — 테스트 생략 상태 |

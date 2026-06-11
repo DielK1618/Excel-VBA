@@ -56,6 +56,8 @@ Public Sub BackupWorkbook(ByVal strPath As String, _
                           Optional ByVal strFile As String = "")
 
     strPath = IIf(Right(strPath, 1) <> "\", strPath & "\", strPath)
+    Call prv_MkFolder(strPath)
+
     If strFile = "" Then
         strFile = "Bak_(" & Format(Now, "yyyymmdd_hhmmss") & ") " & wb.Name
     End If
