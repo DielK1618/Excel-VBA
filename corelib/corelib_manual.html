@@ -5,263 +5,511 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>corelib.xlam 사용자 매뉴얼</title>
 <style>
+  /* ════════════════════════════════════════════════════════
+     LAMBORGHINI DESIGN SYSTEM — corelib.xlam 가이드북
+     True Black Canvas · Lamborghini Gold · Zero Radius
+     ════════════════════════════════════════════════════════ */
   :root {
-    --primary: #2563EB;
-    --primary-dark: #1D4ED8;
-    --sidebar-bg: #0F172A;
-    --sidebar-hover: #1E293B;
-    --code-bg: #1E293B;
-    --code-border: #334155;
-    --body-bg: #F8FAFC;
-    --card-bg: #FFFFFF;
-    --text-main: #0F172A;
-    --text-sub: #64748B;
-    --border: #E2E8F0;
-    --tip-bg: #EFF6FF;
-    --tip-border: #93C5FD;
-    --warn-bg: #FFFBEB;
-    --warn-border: #FCD34D;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', '맑은 고딕', sans-serif; background: var(--body-bg); color: var(--text-main); display: flex; min-height: 100vh; }
+    --gold:        #FFC000;
+    --gold-dark:   #917300;
+    --gold-text:   #FFCE3E;
+    --cyan:        #29ABE2;
+    --black:       #000000;
+    --charcoal:    #202020;
+    --dark-iron:   #181818;
+    --shadow:      #313131;
+    --graphite:    #494949;
+    --white:       #FFFFFF;
+    --smoke:       #F5F5F5;
+    --ash:         #7D7D7D;
+    --steel:       #969696;
 
-  /* ── 사이드바 ── */
+    --body-bg:     #000000;
+    --sidebar-bg:  #000000;
+    --sidebar-hover: #202020;
+    --card-bg:     #202020;
+    --code-bg:     #181818;
+    --code-border: #313131;
+    --border:      #202020;
+    --text-main:   #FFFFFF;
+    --text-sub:    #7D7D7D;
+    --tip-bg:      rgba(255, 192, 0, 0.06);
+    --tip-border:  #FFC000;
+    --warn-bg:     rgba(145, 115, 0, 0.08);
+    --warn-border: #917300;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', '맑은 고딕', sans-serif;
+    background: var(--body-bg);
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     사이드바
+     ════════════════════════════════════════════════════════ */
   #sidebar {
-    width: 260px; min-width: 260px; background: var(--sidebar-bg);
+    width: 260px; min-width: 260px;
+    background: var(--sidebar-bg);
     position: fixed; top: 0; left: 0; height: 100vh;
     overflow-y: auto; z-index: 100;
     display: flex; flex-direction: column;
+    border-right: 1px solid #202020;
   }
-  #sidebar::-webkit-scrollbar { width: 4px; }
-  #sidebar::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+  #sidebar::-webkit-scrollbar { width: 3px; }
+  #sidebar::-webkit-scrollbar-thumb { background: #313131; }
+
   .sidebar-header {
-    padding: 24px 20px 16px;
-    border-bottom: 1px solid #1E293B;
+    padding: 24px 20px 18px;
+    border-bottom: 1px solid #202020;
+    display: flex; align-items: flex-start; gap: 8px;
   }
+  .sidebar-header-content { flex: 1; min-width: 0; }
   .sidebar-logo {
-    font-size: 18px; font-weight: 700; color: #FFFFFF;
+    font-size: 14px; font-weight: 700; color: #FFFFFF;
     display: flex; align-items: center; gap: 8px;
+    text-transform: uppercase; letter-spacing: 0.12em;
   }
-  .sidebar-logo span { color: #60A5FA; }
-  .sidebar-version { font-size: 12px; color: #64748B; margin-top: 4px; }
+  .sidebar-logo span { color: #FFC000; }
+  .sidebar-version {
+    font-size: 10px; color: #494949; margin-top: 6px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
   .sidebar-nav { padding: 12px 0; }
+
   .nav-group-title {
-    font-size: 10px; font-weight: 600; color: #475569;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    padding: 8px 20px 4px;
+    font-size: 9px; font-weight: 700; color: #313131;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    padding: 10px 20px 4px;
   }
   .nav-item {
     display: flex; align-items: center; gap: 10px;
-    padding: 7px 20px; color: #94A3B8; font-size: 13px;
-    text-decoration: none; transition: all 0.15s;
+    padding: 8px 20px; color: #494949; font-size: 11px;
+    text-decoration: none; transition: color 0.15s, background 0.15s, border-color 0.15s;
     border-left: 2px solid transparent;
+    text-transform: uppercase; letter-spacing: 0.07em;
   }
-  .nav-item:hover { background: var(--sidebar-hover); color: #FFFFFF; border-left-color: #60A5FA; }
-  .nav-item.active { background: #1E3A5F; color: #60A5FA; border-left-color: #60A5FA; }
+  .nav-item:hover {
+    background: #202020; color: #FFFFFF; border-left-color: #FFC000;
+  }
+  .nav-item.active {
+    background: #181818; color: #FFC000; border-left-color: #FFC000;
+  }
   .nav-pill {
-    font-size: 9px; font-weight: 700; padding: 1px 6px;
-    border-radius: 20px; margin-left: auto; opacity: 0.9;
+    font-size: 9px; font-weight: 700; padding: 2px 6px;
+    margin-left: auto; letter-spacing: 0.06em;
+    background: transparent; border: 1px solid;
   }
 
-  /* ── 메인 콘텐츠 ── */
+  /* ════════════════════════════════════════════════════════
+     메인 콘텐츠
+     ════════════════════════════════════════════════════════ */
   #main { margin-left: 260px; flex: 1; }
+
   .hero {
-    background: linear-gradient(135deg, #1D4ED8 0%, #0F172A 100%);
-    padding: 60px 48px; color: white;
+    background: #000000;
+    padding: 64px 48px 56px;
+    border-bottom: 1px solid #202020;
   }
-  .hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
-  .hero h1 span { color: #60A5FA; }
-  .hero p { font-size: 16px; color: #CBD5E1; max-width: 600px; line-height: 1.6; }
-  .hero-badges { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .hero h1 {
+    font-size: 52px; font-weight: 400; margin-bottom: 16px;
+    text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.0;
+    color: #FFFFFF;
+  }
+  .hero h1 span { color: #FFC000; }
+  .hero p {
+    font-size: 14px; color: #7D7D7D; max-width: 580px;
+    line-height: 1.65; margin-top: 4px;
+  }
+  .hero-badges { display: flex; gap: 8px; margin-top: 28px; flex-wrap: wrap; }
   .badge {
-    font-size: 12px; font-weight: 600; padding: 4px 12px;
-    border-radius: 20px; border: 1px solid;
+    font-size: 10px; font-weight: 700; padding: 4px 12px;
+    border: 1px solid; text-transform: uppercase; letter-spacing: 0.1em;
+    border-radius: 0;
   }
-  .badge-blue { color: #93C5FD; border-color: #3B82F6; background: rgba(59,130,246,.15); }
-  .badge-green { color: #6EE7B7; border-color: #10B981; background: rgba(16,185,129,.15); }
-  .badge-amber { color: #FCD34D; border-color: #F59E0B; background: rgba(245,158,11,.15); }
+  .badge-blue  { color: #29ABE2; border-color: rgba(41,171,226,0.5); background: transparent; }
+  .badge-green { color: #7D7D7D; border-color: #313131; background: transparent; }
+  .badge-amber { color: #FFC000; border-color: rgba(255,192,0,0.4); background: transparent; }
 
   .content { padding: 0 48px 80px; }
-  .section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  .section { padding: 52px 0; border-bottom: 1px solid #202020; }
   .section:last-child { border-bottom: none; }
 
-  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
-  .section-icon {
-    width: 44px; height: 44px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; flex-shrink: 0;
+  .section-header {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 32px;
   }
-  .section-title { font-size: 24px; font-weight: 700; }
-  .section-subtitle { font-size: 14px; color: var(--text-sub); margin-top: 2px; }
+  .section-icon {
+    width: 40px; height: 40px; background: #202020;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 20px; font-weight: 400;
+    text-transform: uppercase; letter-spacing: 0.06em; color: #FFFFFF;
+  }
+  .section-subtitle { font-size: 12px; color: #7D7D7D; margin-top: 4px; }
 
-  /* ── 함수 카드 ── */
+  /* ════════════════════════════════════════════════════════
+     함수 카드
+     ════════════════════════════════════════════════════════ */
   .func-card {
-    background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 10px; margin-bottom: 16px; overflow: hidden;
+    background: #202020; border: 0;
+    border-bottom: 1px solid #313131;
+    margin-bottom: 10px; overflow: hidden;
   }
   .func-header {
     display: flex; align-items: center; gap: 12px;
-    padding: 14px 18px; border-bottom: 1px solid var(--border);
-    background: #FAFAFA;
+    padding: 12px 16px; border-bottom: 1px solid #313131;
+    background: #181818;
   }
   .func-type {
-    font-size: 11px; font-weight: 700; padding: 2px 8px;
-    border-radius: 4px; flex-shrink: 0;
+    font-size: 9px; font-weight: 700; padding: 3px 8px;
+    flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.08em;
+    border-radius: 0;
   }
-  .type-sub { background: #DBEAFE; color: #1D4ED8; }
-  .type-func { background: #D1FAE5; color: #065F46; }
-  .func-name { font-family: 'Consolas', 'Courier New', monospace; font-size: 15px; font-weight: 600; }
-  .func-desc { font-size: 13px; color: var(--text-sub); margin-left: auto; }
-  .func-body { padding: 16px 18px; }
+  .type-sub  { background: transparent; border: 1px solid #494949; color: #7D7D7D; }
+  .type-func { background: #FFC000; color: #000000; border: none; }
+  .func-name {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px; font-weight: 600; color: #FFFFFF;
+  }
+  .func-desc { font-size: 12px; color: #494949; margin-left: auto; }
+  .func-body { padding: 14px 16px; }
 
-  /* ── 파라미터 테이블 ── */
+  /* ════════════════════════════════════════════════════════
+     파라미터 테이블
+     ════════════════════════════════════════════════════════ */
   .param-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
   .param-table th {
-    text-align: left; padding: 7px 12px; background: #F1F5F9;
-    color: #475569; font-weight: 600; font-size: 11px; text-transform: uppercase;
-    border-bottom: 2px solid var(--border);
+    text-align: left; padding: 7px 12px; background: #181818;
+    color: #494949; font-weight: 700; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 1px solid #313131;
   }
-  .param-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .param-table td {
+    padding: 8px 12px; border-bottom: 1px solid #313131;
+    vertical-align: top; color: #F5F5F5;
+  }
   .param-table tr:last-child td { border-bottom: none; }
-  .param-name { font-family: 'Consolas', monospace; color: #2563EB; font-size: 13px; }
-  .param-type { font-family: 'Consolas', monospace; color: #7C3AED; font-size: 12px; }
-  .param-opt { font-size: 11px; color: #F59E0B; font-weight: 600; }
+  .param-name { font-family: 'Consolas', monospace; color: #FFCE3E; font-size: 13px; }
+  .param-type { font-family: 'Consolas', monospace; color: #29ABE2; font-size: 12px; }
+  .param-opt  { font-size: 10px; color: #7D7D7D; font-weight: 600; text-transform: uppercase; }
 
-  /* ── 코드 블록 ── */
+  /* ════════════════════════════════════════════════════════
+     코드 블록
+     ════════════════════════════════════════════════════════ */
   .code-block {
-    background: var(--code-bg); border: 1px solid var(--code-border);
-    border-radius: 8px; margin-top: 10px; overflow: hidden;
+    background: #181818; border: 1px solid #313131;
+    border-radius: 0; margin-top: 10px; overflow: hidden;
   }
   .code-label {
-    font-size: 11px; font-weight: 600; color: #64748B;
-    padding: 6px 14px; background: #0F172A; border-bottom: 1px solid var(--code-border);
-    text-transform: uppercase; letter-spacing: 0.05em;
+    font-size: 9px; font-weight: 700; color: #494949;
+    padding: 6px 14px; background: #131313; border-bottom: 1px solid #313131;
+    text-transform: uppercase; letter-spacing: 0.1em;
   }
-  .code-label.green { color: #6EE7B7; }
+  .code-label.green { color: #FFC000; }
   .code-block pre {
     font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 13px; line-height: 1.7; padding: 16px 20px;
-    overflow-x: auto; color: #CBD5E1; white-space: pre;
+    font-size: 13px; line-height: 1.75; padding: 16px 20px;
+    overflow-x: auto; color: #F5F5F5; white-space: pre;
   }
-  .c-kw  { color: #818CF8; }   /* 키워드 */
-  .c-str { color: #86EFAC; }   /* 문자열 */
-  .c-cmt { color: #475569; font-style: italic; } /* 주석 */
-  .c-fn  { color: #60A5FA; }   /* 함수명 */
-  .c-num { color: #FB923C; }   /* 숫자 */
-  .c-mod { color: #F9A8D4; }   /* 모듈명 */
+  .c-kw  { color: #FFC000; }
+  .c-str { color: #86EFAC; }
+  .c-cmt { color: #313131; }
+  .c-fn  { color: #FFCE3E; }
+  .c-num { color: #FB923C; }
+  .c-mod { color: #29ABE2; }
 
-  /* ── 팁/경고 박스 ── */
+  /* ════════════════════════════════════════════════════════
+     팁/경고 박스
+     ════════════════════════════════════════════════════════ */
   .tip-box {
-    padding: 12px 16px; border-radius: 8px; font-size: 13px;
-    line-height: 1.6; margin: 12px 0; display: flex; gap: 10px;
+    padding: 12px 16px; font-size: 13px;
+    line-height: 1.6; margin: 12px 0;
+    display: flex; gap: 12px; border-radius: 0;
   }
-  .tip-box.info { background: var(--tip-bg); border-left: 3px solid var(--tip-border); color: #1E3A5F; }
-  .tip-box.warn { background: var(--warn-bg); border-left: 3px solid var(--warn-border); color: #78350F; }
-  .tip-box.green { background: #ECFDF5; border-left: 3px solid #6EE7B7; color: #064E3B; }
-  .tip-icon { flex-shrink: 0; font-size: 15px; }
+  .tip-box.info  { background: var(--tip-bg);  border-left: 2px solid #FFC000; color: #F5F5F5; }
+  .tip-box.warn  { background: var(--warn-bg); border-left: 2px solid #917300; color: #F5F5F5; }
+  .tip-box.green { background: rgba(134,239,172,0.05); border-left: 2px solid #86EFAC; color: #F5F5F5; }
+  .tip-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
 
-  /* ── 토큰 표 ── */
+  /* ════════════════════════════════════════════════════════
+     토큰 그리드
+     ════════════════════════════════════════════════════════ */
   .token-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0;
   }
   .token-card {
-    background: var(--code-bg); border: 1px solid var(--code-border);
-    border-radius: 8px; padding: 12px 16px;
+    background: #181818; border: 1px solid #313131;
+    border-radius: 0; padding: 12px 16px;
   }
-  .token-name { font-family: 'Consolas', monospace; color: #60A5FA; font-size: 15px; font-weight: 700; }
-  .token-desc { font-size: 12px; color: #94A3B8; margin-top: 4px; }
+  .token-name { font-family: 'Consolas', monospace; color: #FFCE3E; font-size: 14px; font-weight: 700; }
+  .token-desc { font-size: 12px; color: #7D7D7D; margin-top: 4px; }
 
-  /* ── 섹션 색상 ── */
-  .ic-core   { background: #EDE9FE; } .ic-path  { background: #DBEAFE; }
-  .ic-file   { background: #DCFCE7; } .ic-sheet { background: #FEF9C3; }
-  .ic-table  { background: #FFE4E6; } .ic-range { background: #FCE7F3; }
-  .ic-format { background: #EDE9FE; } .ic-excel { background: #CCFBF1; }
-  .ic-utils  { background: #FFEDD5; } .ic-error { background: #FEE2E2; }
-  .ic-db     { background: #E2E8F0; } .ic-start { background: #DBEAFE; }
+  /* ════════════════════════════════════════════════════════
+     섹션 아이콘 — 모두 동일한 다크 배경
+     ════════════════════════════════════════════════════════ */
+  .ic-core, .ic-path, .ic-file, .ic-sheet, .ic-table,
+  .ic-range, .ic-format, .ic-excel, .ic-utils, .ic-error,
+  .ic-db, .ic-start { background: #202020; }
 
-  .pill-core   { background: #7C3AED; color: white; }
-  .pill-path   { background: #0EA5E9; color: white; }
-  .pill-file   { background: #10B981; color: white; }
-  .pill-sheet  { background: #F59E0B; color: white; }
-  .pill-table  { background: #EF4444; color: white; }
-  .pill-range  { background: #EC4899; color: white; }
-  .pill-format { background: #8B5CF6; color: white; }
-  .pill-excel  { background: #14B8A6; color: white; }
-  .pill-utils  { background: #F97316; color: white; }
-  .pill-error  { background: #DC2626; color: white; }
-  .pill-db     { background: #475569; color: white; }
+  /* ════════════════════════════════════════════════════════
+     사이드바 필 배지 — 금속 테두리 스타일
+     ════════════════════════════════════════════════════════ */
+  .pill-core   { color: #FFCE3E; border-color: rgba(255,192,0,0.4); }
+  .pill-path   { color: #29ABE2; border-color: rgba(41,171,226,0.4); }
+  .pill-file   { color: #86EFAC; border-color: rgba(134,239,172,0.3); }
+  .pill-sheet  { color: #FFC000; border-color: rgba(255,192,0,0.4); }
+  .pill-table  { color: #FB923C; border-color: rgba(251,146,60,0.3); }
+  .pill-range  { color: #F9A8D4; border-color: rgba(249,168,212,0.3); }
+  .pill-format { color: #A78BFA; border-color: rgba(167,139,250,0.3); }
+  .pill-excel  { color: #5EEAD4; border-color: rgba(94,234,212,0.3); }
+  .pill-utils  { color: #FCD34D; border-color: rgba(252,211,77,0.3); }
+  .pill-error  { color: #F87171; border-color: rgba(248,113,113,0.3); }
+  .pill-db     { color: #969696; border-color: #313131; }
 
-  /* ── 그리드 ── */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  /* ════════════════════════════════════════════════════════
+     레이아웃 유틸리티
+     ════════════════════════════════════════════════════════ */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .divider { height: 1px; background: #202020; margin: 20px 0; }
 
-  /* ── 구분선 ── */
-  .divider { height: 1px; background: var(--border); margin: 20px 0; }
-
-  /* ── 반환값 표시 ── */
   .return-tag {
-    display: inline-block; font-size: 12px; font-weight: 600;
-    padding: 2px 10px; border-radius: 4px; margin-top: 8px;
-    background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D;
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 3px 10px; margin-top: 8px;
+    background: transparent; color: #FFC000;
+    border: 1px solid rgba(255,192,0,0.5);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    border-radius: 0;
   }
 
-  /* ── 스크롤 스파이용 앵커 ── */
   [id] { scroll-margin-top: 24px; }
 
-  /* ── 개요 그리드 ── */
+  /* ════════════════════════════════════════════════════════
+     개요 그리드
+     ════════════════════════════════════════════════════════ */
   .overview-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px;
   }
   .ov-card {
-    background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 12px; overflow: hidden; transition: box-shadow 0.15s;
+    background: #202020; border: 1px solid #313131;
+    border-radius: 0; overflow: hidden;
+    transition: border-color 0.15s;
   }
-  .ov-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .ov-card:hover { border-color: #FFC000; }
   .ov-card-header {
     display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px; border-bottom: 1px solid var(--border);
+    padding: 12px 14px; border-bottom: 1px solid #313131;
     text-decoration: none; cursor: pointer;
+    transition: background 0.15s;
   }
-  .ov-card-header:hover { background: #F8FAFC; }
-  .ov-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-  .ov-title { font-size: 13px; font-weight: 700; color: var(--text-main); font-family: 'Consolas', monospace; }
-  .ov-desc { font-size: 11px; color: var(--text-sub); margin-top: 1px; line-height: 1.4; }
-  .ov-arrow { margin-left: auto; color: #94A3B8; font-size: 12px; }
-  .ov-fns { padding: 10px 12px 12px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .ov-card-header:hover { background: #181818; }
+  .ov-icon {
+    width: 28px; height: 28px; background: #181818;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .ov-title {
+    font-size: 12px; font-weight: 700; color: #FFFFFF;
+    font-family: 'Consolas', monospace;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .ov-desc { font-size: 11px; color: #7D7D7D; margin-top: 2px; line-height: 1.4; }
+  .ov-arrow { margin-left: auto; color: #313131; font-size: 12px; }
+  .ov-fns { padding: 10px 12px 12px; display: flex; flex-wrap: wrap; gap: 4px; }
   .fn-chip {
-    font-size: 11px; font-family: 'Consolas', monospace;
-    padding: 3px 9px; border-radius: 20px;
-    border: 1px solid var(--border); color: #334155;
-    background: #F8FAFC; text-decoration: none;
-    transition: all 0.12s; white-space: nowrap; display: inline-block;
+    font-size: 10px; font-family: 'Consolas', monospace;
+    padding: 3px 8px; border: 1px solid #313131;
+    color: #7D7D7D; background: #181818;
+    text-decoration: none; transition: all 0.12s;
+    white-space: nowrap; display: inline-block; border-radius: 0;
   }
-  .fn-chip:hover { border-color: #93C5FD; background: #EFF6FF; color: #1D4ED8; }
+  .fn-chip:hover { border-color: #FFC000; color: #FFC000; }
 
-  /* ── 개요 함수 리스트 (이름+설명 형식) ── */
-  .fn-list { list-style: none; padding: 8px 14px 12px; }
-  .fn-list li { margin-bottom: 2px; }
+  /* ════════════════════════════════════════════════════════
+     개요 함수 리스트
+     ════════════════════════════════════════════════════════ */
+  .fn-list { list-style: none; padding: 6px 12px 10px; }
+  .fn-list li { margin-bottom: 1px; }
   .fn-list a {
-    display: block; padding: 5px 8px; border-radius: 6px;
+    display: block; padding: 5px 8px;
     text-decoration: none; transition: background 0.12s;
-    line-height: 1.45;
+    line-height: 1.45; border-radius: 0;
   }
-  .fn-list a:hover { background: #EFF6FF; }
-  .fn-n { font-family: 'Consolas', monospace; font-size: 12px; font-weight: 700; color: #1D4ED8; }
-  .fn-d { font-size: 11px; color: #64748B; margin-left: 3px; }
-  .fn-list li + li { border-top: 1px solid #F1F5F9; }
+  .fn-list a:hover { background: #181818; }
+  .fn-n { font-family: 'Consolas', monospace; font-size: 11px; font-weight: 700; color: #FFCE3E; }
+  .fn-d { font-size: 11px; color: #494949; margin-left: 4px; }
+  .fn-list li + li { border-top: 1px solid #313131; }
   .fn-scroll { max-height: 280px; overflow-y: auto; }
   .fn-scroll::-webkit-scrollbar { width: 3px; }
-  .fn-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 2px; }
+  .fn-scroll::-webkit-scrollbar-thumb { background: #313131; }
+
+  /* ════════════════════════════════════════════════════════
+     인라인 code 태그
+     ════════════════════════════════════════════════════════ */
+  code {
+    font-family: 'Consolas', monospace; font-size: 12px;
+    background: #181818; color: #FFCE3E;
+    padding: 1px 5px; border: 1px solid #313131;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     인라인 스타일 오버라이드
+     (HTML 내부 hardcoded 밝은 색상 → 다크 테마 보정)
+     ════════════════════════════════════════════════════════ */
+  .tip-box strong { color: #FFFFFF; }
+  .section p[style], .func-body p[style] { color: #7D7D7D; }
+
+  /* ════════════════════════════════════════════════════════
+     드로어 오버레이
+     ════════════════════════════════════════════════════════ */
+  #drawer-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 150;
+    background: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
+  #drawer-overlay.visible { display: block; }
+
+  /* ════════════════════════════════════════════════════════
+     모바일 상단 바 (기본 숨김 — 반응형에서 표시)
+     ════════════════════════════════════════════════════════ */
+  #topbar {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; height: 52px;
+    background: #000000; border-bottom: 1px solid #202020;
+    align-items: center; justify-content: space-between;
+    padding: 0 20px; z-index: 100;
+  }
+  #menu-toggle {
+    display: flex; align-items: center; gap: 10px;
+    background: transparent; border: none; cursor: pointer;
+    color: #FFFFFF; font-size: 11px; font-weight: 400;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    padding: 8px 0; font-family: inherit;
+  }
+  #menu-toggle:hover .hamburger-line { background: #FFC000; }
+  .hamburger-icon {
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 5px; width: 18px; height: 14px;
+  }
+  .hamburger-line {
+    display: block; height: 1px; width: 100%;
+    background: #FFFFFF;
+    transition: background 0.15s;
+  }
+  .topbar-logo {
+    font-size: 12px; font-weight: 700; color: #FFFFFF;
+    text-transform: uppercase; letter-spacing: 0.12em;
+  }
+  .topbar-logo span { color: #FFC000; }
+
+  /* ── 사이드바 내 닫기 버튼 (기본 숨김) ── */
+  #sidebar-close {
+    display: none;
+    background: transparent; border: 1px solid #313131;
+    color: #7D7D7D; font-size: 14px; cursor: pointer;
+    padding: 3px 10px; line-height: 1;
+    margin-left: auto; flex-shrink: 0;
+    transition: color 0.15s, border-color 0.15s;
+    font-family: inherit;
+  }
+  #sidebar-close:hover { color: #FFFFFF; border-color: #7D7D7D; }
+
+  /* ════════════════════════════════════════════════════════
+     반응형 — Tablet (≤ 1024px) : 드로어 모드
+     ════════════════════════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    #topbar { display: flex; }
+    #sidebar-close { display: block; }
+
+    #sidebar {
+      transform: translateX(-260px);
+      transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 200;
+      border-right: 1px solid #202020;
+    }
+    #sidebar.open { transform: translateX(0); }
+
+    #main { margin-left: 0; padding-top: 52px; }
+
+    .hero { padding: 40px 28px 36px; }
+    .hero h1 { font-size: 38px; }
+    .content { padding: 0 28px 60px; }
+
+    .overview-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col       { grid-template-columns: 1fr; }
+    .token-grid    { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     반응형 — Mobile (≤ 640px)
+     ════════════════════════════════════════════════════════ */
+  @media (max-width: 640px) {
+    .hero { padding: 28px 16px 24px; }
+    .hero h1 { font-size: 28px; letter-spacing: 0.02em; }
+    .hero p  { font-size: 13px; }
+    .content { padding: 0 16px 48px; }
+    .section { padding: 36px 0; }
+
+    .overview-grid { grid-template-columns: 1fr; }
+    .token-grid    { grid-template-columns: 1fr; }
+    .two-col       { grid-template-columns: 1fr; }
+
+    .func-name  { font-size: 12px; }
+    .section-title { font-size: 17px; }
+
+    .param-table th,
+    .param-table td { padding: 6px 8px; font-size: 12px; }
+
+    .code-block pre { font-size: 12px; padding: 12px 14px; }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     반응형 — Mobile Small (≤ 425px)
+     ════════════════════════════════════════════════════════ */
+  @media (max-width: 425px) {
+    .hero h1 { font-size: 24px; }
+    .hero-badges { gap: 6px; }
+    .badge { font-size: 9px; padding: 3px 8px; }
+    #topbar { padding: 0 14px; }
+    #menu-toggle { letter-spacing: 0.1em; }
+  }
 </style>
 </head>
 <body>
+
+<!-- 드로어 오버레이 -->
+<div id="drawer-overlay"></div>
+
+<!-- 모바일 상단 바 -->
+<header id="topbar">
+  <button id="menu-toggle" aria-label="메뉴 열기">
+    <div class="hamburger-icon">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </div>
+    MENU
+  </button>
+  <div class="topbar-logo">📦 <span>corelib</span>.xlam</div>
+</header>
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!--  사이드바                                              -->
 <!-- ═══════════════════════════════════════════════════════ -->
 <nav id="sidebar">
   <div class="sidebar-header">
-    <div class="sidebar-logo">📦 <span>corelib</span>.xlam</div>
-    <div class="sidebar-version">v1.0.0 · 사용자 매뉴얼</div>
+    <div class="sidebar-header-content">
+      <div class="sidebar-logo">📦 <span>corelib</span>.xlam</div>
+      <div class="sidebar-version">v1.0.0 · 사용자 매뉴얼</div>
+    </div>
+    <button id="sidebar-close" aria-label="메뉴 닫기">✕</button>
   </div>
   <div class="sidebar-nav">
     <div class="nav-group-title">시작하기</div>
@@ -345,14 +593,14 @@
           <li><a href="#fn-path-replace"><span class="fn-n">ReplacePath</span><span class="fn-d">— 토큰 포함 경로를 실제 로컬 경로로 변환</span></a></li>
         </ul>
         <div style="padding:0 14px 12px;">
-          <div style="font-size:11px;color:#94A3B8;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">내장 토큰</div>
+          <div style="font-size:9px;color:#494949;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.12em;">내장 토큰</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;">
-            <span style="font-family:Consolas;color:#60A5FA;">{cPath}</span><span style="color:#64748B;">CWB 폴더 경로</span>
-            <span style="font-family:Consolas;color:#60A5FA;">{cFile}</span><span style="color:#64748B;">CWB 전체 파일 경로</span>
-            <span style="font-family:Consolas;color:#60A5FA;">{xPath}</span><span style="color:#64748B;">xlam 폴더 경로</span>
-            <span style="font-family:Consolas;color:#60A5FA;">{xFile}</span><span style="color:#64748B;">xlam 전체 파일 경로</span>
-            <span style="font-family:Consolas;color:#60A5FA;">{xDB}</span><span style="color:#64748B;">xlam\DB 경로</span>
-            <span style="font-family:Consolas;color:#60A5FA;">{xBak}</span><span style="color:#64748B;">xlam\Backup 경로</span>
+            <span style="font-family:Consolas;color:#FFCE3E;">{cPath}</span><span style="color:#7D7D7D;">CWB 폴더 경로</span>
+            <span style="font-family:Consolas;color:#FFCE3E;">{cFile}</span><span style="color:#7D7D7D;">CWB 전체 파일 경로</span>
+            <span style="font-family:Consolas;color:#FFCE3E;">{xPath}</span><span style="color:#7D7D7D;">xlam 폴더 경로</span>
+            <span style="font-family:Consolas;color:#FFCE3E;">{xFile}</span><span style="color:#7D7D7D;">xlam 전체 파일 경로</span>
+            <span style="font-family:Consolas;color:#FFCE3E;">{xDB}</span><span style="color:#7D7D7D;">xlam\DB 경로</span>
+            <span style="font-family:Consolas;color:#FFCE3E;">{xBak}</span><span style="color:#7D7D7D;">xlam\Backup 경로</span>
           </div>
         </div>
       </div>
@@ -549,15 +797,15 @@
         <ul class="fn-list">
           <li><a href="#fn-db-con"><span class="fn-n">conStr</span><span class="fn-d">— DB 종류별 연결 문자열 생성</span></a></li>
           <li><a href="#fn-db-exec"><span class="fn-n">ExecuteQueryArr</span><span class="fn-d">— INSERT/UPDATE/DELETE 쿼리 배열 실행</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">SelectQuery</span><span class="fn-d">— SELECT 결과 → 2차원 배열 반환</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">SelectExcelQuery</span><span class="fn-d">— Excel 파일 대상 OLEDB 쿼리 실행</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">GetFields</span><span class="fn-d">— 테이블 필드명 배열 반환</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">GetFieldAndType</span><span class="fn-d">— 필드명+데이터타입 딕셔너리 반환</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">GetDbInfo</span><span class="fn-d">— DB 연결 정보 딕셔너리 반환</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">AutoIDs</span><span class="fn-d">— 테이블 ID 필드 자동 재번호 부여</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">GetFieldNameConnection</span><span class="fn-d">— 연결 문자열에서 DB 이름 추출</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">CreateAccessTable</span><span class="fn-d">— Access DB에 테이블 신규 생성</span></a></li>
-          <li><a href="#fn-db-exec"><span class="fn-n">DeleteAccessTable</span><span class="fn-d">— Access DB 테이블 삭제</span></a></li>
+          <li><a href="#fn-db-select"><span class="fn-n">SelectQuery</span><span class="fn-d">— SELECT 결과를 셀 범위에 직접 출력</span></a></li>
+          <li><a href="#fn-db-excel-query"><span class="fn-n">SelectExcelQuery</span><span class="fn-d">— Excel 파일 대상 OLEDB 쿼리 (미구현)</span></a></li>
+          <li><a href="#fn-db-schema"><span class="fn-n">GetFields</span><span class="fn-d">— 테이블 헤더 필드명 배열 반환</span></a></li>
+          <li><a href="#fn-db-fieldtype"><span class="fn-n">GetFieldAndType</span><span class="fn-d">— 필드명 + DB 데이터 타입 배열 반환</span></a></li>
+          <li><a href="#fn-db-info"><span class="fn-n">GetDbInfo</span><span class="fn-d">— DB 연결 정보 반환 (미구현)</span></a></li>
+          <li><a href="#fn-db-util"><span class="fn-n">AutoIDs</span><span class="fn-d">— 빈 셀 자동 ID 채움</span></a></li>
+          <li><a href="#fn-db-connection"><span class="fn-n">GetFieldNameConnection</span><span class="fn-d">— 테이블 필드 메타정보 배열 반환</span></a></li>
+          <li><a href="#fn-db-create"><span class="fn-n">CreateAccessTable</span><span class="fn-d">— Access 테이블 신규 생성</span></a></li>
+          <li><a href="#fn-db-delete"><span class="fn-n">DeleteAccessTable</span><span class="fn-d">— Access 테이블 전체 데이터 삭제</span></a></li>
         </ul>
       </div>
 
@@ -921,6 +1169,121 @@ strFile = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
         </div>
       </div>
     </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">파일/폴더 조작</h3>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-file-manip">DelFile(strPath)</span>
+          <span class="func-desc">파일 삭제</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_File.DelFile"</span>, <span class="c-str">"C:\Temp\out.xlsx"</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">RenFile(strOldPath, strNewPath)</span>
+          <span class="func-desc">파일 이름 변경 / 이동</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-cmt">' 이름 변경</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_File.RenFile"</span>, _
+    <span class="c-str">"C:\Temp\old.xlsx"</span>, <span class="c-str">"C:\Temp\new.xlsx"</span>
+<span class="c-cmt">' 다른 폴더로 이동도 동일 방식</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">CopyFile(strSrcPath, strDestPath)</span>
+          <span class="func-desc">파일 복사</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_File.CopyFile"</span>, _
+    <span class="c-str">"C:\Src\report.xlsx"</span>, <span class="c-str">"D:\Backup\report.xlsx"</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">CopyFolder(strSrcPath, strDestPath)</span>
+          <span class="func-desc">폴더 전체 복사 (FSO)</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_File.CopyFolder"</span>, _
+    <span class="c-str">"C:\Data\2024"</span>, <span class="c-str">"D:\Backup\2024"</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name">GetFoldersList(strPath, ByRef arrFolders(), [blnSubFolders], [strFilter], [ByRef i])</span>
+        <span class="func-desc">하위 폴더 목록 수집 (재귀)</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">strPath</td><td class="param-type">String</td><td>검색 루트 경로</td></tr>
+          <tr><td class="param-name">arrFolders()</td><td class="param-type">Variant()</td><td>결과를 담을 ByRef 배열</td></tr>
+          <tr><td class="param-name">blnSubFolders <span class="param-opt">Optional=True</span></td><td class="param-type">Boolean</td><td>True: 하위 폴더 재귀 포함</td></tr>
+          <tr><td class="param-name">strFilter <span class="param-opt">Optional="*"</span></td><td class="param-type">String</td><td>폴더명 필터 패턴</td></tr>
+        </table>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-kw">Dim</span> arrFolders() <span class="c-kw">As</span> <span class="c-kw">Variant</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_File.GetFoldersList"</span>, _
+    <span class="c-str">"C:\Projects"</span>, arrFolders, <span class="c-kw">True</span>
+<span class="c-cmt">' arrFolders → 수집된 폴더 경로 배열</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name">GetFilesList(strPath, [strFilter], [blnSubFolders]) As Variant</span>
+        <span class="func-desc">조건에 맞는 파일 목록 수집</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">strPath</td><td class="param-type">String</td><td>검색 루트 경로</td></tr>
+          <tr><td class="param-name">strFilter <span class="param-opt">Optional="*"</span></td><td class="param-type">String</td><td>파일명 패턴 (예: <code>"*.xlsx"</code>)</td></tr>
+          <tr><td class="param-name">blnSubFolders <span class="param-opt">Optional=True</span></td><td class="param-type">Boolean</td><td>True: 하위 폴더 재귀 검색</td></tr>
+        </table>
+        <div class="return-tag">반환: Variant — 파일 전체 경로 배열</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-kw">Dim</span> arrFiles <span class="c-kw">As</span> <span class="c-kw">Variant</span>
+arrFiles = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_File.GetFilesList"</span>, _
+    <span class="c-str">"C:\Reports"</span>, <span class="c-str">"*.xlsx"</span>, <span class="c-kw">False</span>)
+<span class="c-cmt">' arrFiles(0) → "C:\Reports\Jan.xlsx" 등</span></pre>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════ am_Sheet ══ -->
@@ -1183,6 +1546,240 @@ strName = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
         </div>
       </div>
     </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name" id="fn-tbl-findrng">TblFindRng_MC(targetTable, outputColumns, conditions...) As Range</span>
+        <span class="func-desc">다중 조건 검색 → Range 반환</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:12px;">TblFindVals_MC와 동일한 다중조건 검색이지만 값 배열 대신 해당 행의 Range 객체를 반환합니다. Application.Run 방식으로는 Range를 직접 반환받을 수 없으므로 스칼라 래퍼 함수와 조합하여 사용합니다.</p>
+        <div class="tip-box warn">
+          <span class="tip-icon">⚠️</span>
+          <span>Application.Run 으로 Range 타입을 반환받을 수 없습니다. 동일 워크북 내 Sub에서 직접 호출하거나, 래퍼 함수를 통해 셀 주소 문자열로 받으세요.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">행/열 조작</h3>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-tbl-rows">DelTableAllRows([tbl])</span>
+          <span class="func-desc">테이블 전체 행 삭제</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.DelTableAllRows"</span>, tbl</pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">ClearFiltersInTable([tbl])</span>
+          <span class="func-desc">테이블 필터 전체 해제</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.ClearFiltersInTable"</span>, tbl</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name">DelTableRows(intSelectRow, [intCount=1], [tbl])</span>
+        <span class="func-desc">지정 행 번호 삭제</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">intSelectRow</td><td class="param-type">Long</td><td>삭제할 시작 행 번호 (1-based, 헤더 제외)</td></tr>
+          <tr><td class="param-name">intCount <span class="param-opt">Optional=1</span></td><td class="param-type">Long</td><td>삭제할 행 수</td></tr>
+          <tr><td class="param-name">tbl <span class="param-opt">Optional</span></td><td class="param-type">ListObject</td><td>대상 테이블</td></tr>
+        </table>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-cmt">' 3번 행 1개 삭제</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.DelTableRows"</span>, tbl, <span class="c-num">3</span>, <span class="c-num">1</span>
+<span class="c-cmt">' 2번 행부터 3개 삭제</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.DelTableRows"</span>, tbl, <span class="c-num">2</span>, <span class="c-num">3</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name">AddTableRows(intAddRows, [intSelectRow=0], [tbl])</span>
+        <span class="func-desc">테이블에 빈 행 추가</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">intAddRows</td><td class="param-type">Long</td><td>추가할 행 수</td></tr>
+          <tr><td class="param-name">intSelectRow <span class="param-opt">Optional=0</span></td><td class="param-type">Long</td><td>삽입 위치 행 번호 (0 = 맨 아래에 추가)</td></tr>
+          <tr><td class="param-name">tbl <span class="param-opt">Optional</span></td><td class="param-type">ListObject</td><td>대상 테이블</td></tr>
+        </table>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-cmt">' 맨 아래에 3행 추가</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.AddTableRows"</span>, tbl, <span class="c-num">3</span>
+<span class="c-cmt">' 2번 행 위치에 1행 삽입</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.AddTableRows"</span>, tbl, <span class="c-num">1</span>, <span class="c-num">2</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-tbl-cols">AddColumns(intAddColumns, [intSelectColumn=0], [tbl])</span>
+          <span class="func-desc">빈 열 추가</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-cmt">' 맨 오른쪽에 2열 추가</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.AddColumns"</span>, tbl, <span class="c-num">2</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">DelTableColumns(intSelectColumn, [intCount=1], [tbl])</span>
+          <span class="func-desc">열 삭제</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-cmt">' 3번 열 삭제</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.DelTableColumns"</span>, tbl, <span class="c-num">3</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name">AddArrayColumns(arrColumnNames, [intSelectColumn=0], [tbl])</span>
+        <span class="func-desc">배열 데이터로 열 일괄 추가</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">헤더명 배열을 전달하면 해당 이름의 열을 한 번에 추가합니다.</p>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.AddArrayColumns"</span>, _
+    tbl, <span class="c-fn">Array</span>(<span class="c-str">"비고1"</span>, <span class="c-str">"비고2"</span>, <span class="c-str">"확인"</span>)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">테이블 정보 조회</h3>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-tbl-info">ResizeTable([tbl])</span>
+          <span class="func-desc">테이블 범위 자동 크기 조정</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">테이블 주변의 실제 데이터 범위를 감지하여 ListObject 범위를 재설정합니다.</p>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Table.ResizeTable"</span>, tbl</pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name">IsTable(rng) As Boolean</span>
+          <span class="func-desc">범위가 테이블 내부인지 확인</span>
+        </div>
+        <div class="func-body">
+          <div class="return-tag">반환: Boolean</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">If</span> <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Table.IsTable"</span>, Selection) <span class="c-kw">Then</span>
+    <span class="c-cmt">' 테이블 내부 선택</span>
+<span class="c-kw">End If</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name">GetTableNames(ws, [strPassName]) As Variant</span>
+        <span class="func-desc">시트의 테이블명 배열 반환</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">ws</td><td class="param-type">Worksheet</td><td>대상 시트</td></tr>
+          <tr><td class="param-name">strPassName <span class="param-opt">Optional=""</span></td><td class="param-type">String</td><td>결과에서 제외할 테이블명</td></tr>
+        </table>
+        <div class="return-tag">반환: Variant — 테이블명 배열</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-kw">Dim</span> arrNames <span class="c-kw">As</span> <span class="c-kw">Variant</span>
+arrNames = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Table.GetTableNames"</span>, Sheet1)
+<span class="c-cmt">' → Array("T_주문", "T_고객", ...)</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name">GetAllSheetTableNames(wb) As Variant</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">워크북 전체 시트의 테이블명을 모두 수집합니다.</p>
+          <div class="return-tag">반환: Variant — 전체 테이블명 배열</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre>arrNames = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Table.GetAllSheetTableNames"</span>, _
+    ThisWorkbook)</pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name">GetTableColumnsWidth([tbl], [intRound=0], [sngMultiplier=1]) As Variant</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">테이블 각 열의 현재 너비를 배열로 반환합니다.</p>
+          <div class="return-tag">반환: Variant — 열 너비 배열</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre>arrWidths = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Table.GetTableColumnsWidth"</span>, tbl)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════ am_Range ══ -->
@@ -1261,6 +1858,76 @@ lngCnt = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
         </div>
       </div>
     </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">FindRange 결과 스칼라 래퍼</h3>
+
+    <div class="tip-box info">
+      <span class="tip-icon">💡</span>
+      <span>Application.Run 으로 Range 를 직접 반환할 수 없습니다. 아래 래퍼 함수들은 FindRange 결과를 Boolean 또는 String 으로 변환하여 반환합니다.</span>
+    </div>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name" id="fn-rng-scalar">FindRange_IsValid(rngFind, strValue, [blnAddRow=False]) As Boolean</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">범위에서 값을 찾아 셀이 존재하면 True를 반환합니다.</p>
+          <div class="return-tag">반환: Boolean</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">If</span> <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Range.FindRange_IsValid"</span>, _
+    Sheet1.Range(<span class="c-str">"A:A"</span>), <span class="c-str">"검색어"</span>) <span class="c-kw">Then</span>
+    <span class="c-cmt">' 값 존재</span>
+<span class="c-kw">End If</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name">FindRange_CellValue(rngFind, strValue, [blnAddRow=False]) As String</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">FindRange 결과 셀의 값을 문자열로 반환합니다. 찾지 못하면 빈 문자열("").</p>
+          <div class="return-tag">반환: String — 검색된 셀 값 / 없으면 ""</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre">strVal = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Range.FindRange_CellValue"</span>, _
+    Sheet1.Range(<span class="c-str">"A:A"</span>), <span class="c-str">"키워드"</span>)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name">FindCellsByColor_Count(lngColor, rng, [blnUnion=True]) As Long</span>
+        <span class="func-desc">특정 색상 셀 수 반환</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">lngColor</td><td class="param-type">Long</td><td>검색할 배경색 (RGB 값)</td></tr>
+          <tr><td class="param-name">rng</td><td class="param-type">Range</td><td>검색 대상 범위</td></tr>
+          <tr><td class="param-name">blnUnion <span class="param-opt">Optional=True</span></td><td class="param-type">Boolean</td><td>True: Union 범위 기준 / False: 개별 셀 기준</td></tr>
+        </table>
+        <div class="return-tag">반환: Long — 해당 색상 셀 수</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-kw">Dim</span> lngCnt <span class="c-kw">As</span> <span class="c-kw">Long</span>
+lngCnt = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Range.FindCellsByColor_Count"</span>, _
+    <span class="c-fn">RGB</span>(<span class="c-num">255</span>, <span class="c-num">0</span>, <span class="c-num">0</span>), Sheet1.UsedRange)
+<span class="c-fn">MsgBox</span> <span class="c-str">"빨간 셀: "</span> &amp; lngCnt &amp; <span class="c-str">"개"</span></pre>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════ am_Format ══ -->
@@ -1287,10 +1954,26 @@ lngCnt = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
           <div class="code-label green">예시</div>
           <pre><span class="c-cmt">' 수식 조건 서식 — 값 > 100 이면 빨간 배경</span>
 <span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Format.ConditionalFormattingFormula"</span>, _
-    Range(<span class="c-str">"A1:A100"</span>), <span class="c-str">"=$A1>100"</span>, -<span class="c-num">1</span>, <span class="c-fn">RGB</span>(<span class="c-num">255</span>, <span class="c-num">200</span>, <span class="c-num">200</span>)
+    Range(<span class="c-str">"A1:A100"</span>), <span class="c-str">"=$A1>100"</span>, -<span class="c-num">1</span>, <span class="c-fn">RGB</span>(<span class="c-num">255</span>, <span class="c-num">200</span>, <span class="c-num">200</span>)</pre>
+        </div>
+      </div>
+    </div>
 
-<span class="c-cmt">' 조건부 서식 전체 삭제</span>
-<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Format.ClearConditionalFormatting"</span>, Range(<span class="c-str">"A1:A100"</span>)</pre>
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name" id="fn-fmt-clear">ClearConditionalFormatting(rng)</span>
+        <span class="func-desc">조건부 서식 전체 삭제</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">rng</td><td class="param-type">Range</td><td>조건부 서식을 제거할 범위</td></tr>
+        </table>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Format.ClearConditionalFormatting"</span>, _
+    Range(<span class="c-str">"A1:Z100"</span>)</pre>
         </div>
       </div>
     </div>
@@ -1430,6 +2113,145 @@ ACTION_ARROW_DOWN=7, ACTION_ARROW_UP=8, ACTION_ARROW_LEFT=9, ACTION_ARROW_RIGHT=
           <pre><span class="c-cmt">' 복사 → 붙여넣기</span>
 <span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Excel.ExecuteKeyAction"</span>, <span class="c-num">1</span>  <span class="c-cmt">' Ctrl+C</span>
 <span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Excel.ExecuteKeyAction"</span>, <span class="c-num">2</span>  <span class="c-cmt">' Ctrl+V</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name" id="fn-exc-rangekey">ProcessRangeWithKeySequence(rng, actions...)</span>
+        <span class="func-desc">범위 각 셀마다 키 시퀀스 반복 실행</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">rng의 각 셀을 순회하면서 동일한 키 시퀀스를 반복 적용합니다. 대량 반복 자동화에 사용합니다.</p>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-cmt">' A열 전체 셀에 복사→엔터 반복</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Excel.ProcessRangeWithKeySequence"</span>, _
+    Sheet1.Range(<span class="c-str">"A1:A20"</span>), <span class="c-num">1</span>, <span class="c-num">4</span>  <span class="c-cmt">' ACTION_COPY, ACTION_ENTER</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">차트 · 도형</h3>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-exc-chart">SetChartDataRange(strChart, rng, [ws])</span>
+          <span class="func-desc">차트 데이터 범위 변경</span>
+        </div>
+        <div class="func-body">
+          <table class="param-table">
+            <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+            <tr><td class="param-name">strChart</td><td class="param-type">String</td><td>대상 차트 이름</td></tr>
+            <tr><td class="param-name">rng</td><td class="param-type">Range</td><td>새 데이터 범위</td></tr>
+            <tr><td class="param-name">ws <span class="param-opt">Optional</span></td><td class="param-type">Worksheet</td><td>차트가 있는 시트 (생략 시 ActiveSheet)</td></tr>
+          </table>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Excel.SetChartDataRange"</span>, _
+    <span class="c-str">"차트 1"</span>, Sheet1.Range(<span class="c-str">"A1:B10"</span>)</pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-exc-shape">RunShpMacro(strShpName, [ws])</span>
+          <span class="func-desc">도형 OnAction 매크로 실행</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">도형 텍스트와 이름이 일치하는 도형의 OnAction에 연결된 매크로를 실행합니다.</p>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre"><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Excel.RunShpMacro"</span>, _
+    <span class="c-str">"버튼_저장"</span>, Sheet1</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name">GetShapeTextSafe(shp) As String</span>
+        <span class="func-desc">도형 텍스트 안전하게 반환</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">그룹 도형 포함, 텍스트 프레임이 없는 도형에서도 오류 없이 텍스트를 반환합니다.</p>
+        <div class="return-tag">반환: String — 도형 텍스트 / 없으면 ""</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre"><span class="c-kw">Dim</span> strTxt <span class="c-kw">As</span> <span class="c-kw">String</span>
+strTxt = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Excel.GetShapeTextSafe"</span>, _
+    Sheet1.Shapes(<span class="c-str">"도형1"</span>))</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">마우스 / 타이머</h3>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name" id="fn-exc-mouse">GetMousePosition(ByRef lngX, ByRef lngY)</span>
+        <span class="func-desc">마우스 현재 좌표 반환</span>
+      </div>
+      <div class="func-body">
+        <div class="tip-box warn">
+          <span class="tip-icon">⚠️</span>
+          <span>ByRef 파라미터이므로 Application.Run 방식으로 호출하면 값이 전달되지 않습니다. xlam 내부 래퍼 Sub를 통해 사용하거나, CWB 모듈에서 직접 호출하세요.</span>
+        </div>
+        <div class="code-block">
+          <div class="code-label green">xlam 내부 호출 예시</div>
+          <pre"><span class="c-kw">Dim</span> lngX <span class="c-kw">As</span> <span class="c-kw">Long</span>, lngY <span class="c-kw">As</span> <span class="c-kw">Long</span>
+<span class="c-mod">am_Excel</span>.<span class="c-fn">GetMousePosition</span> lngX, lngY
+<span class="c-fn">Debug.Print</span> lngX, lngY</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">ClickAtPosition(lngX, lngY, [blnLeft=True], [strDelay], [strWait])</span>
+          <span class="func-desc">지정 좌표 마우스 클릭</span>
+        </div>
+        <div class="func-body">
+          <table class="param-table">
+            <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+            <tr><td class="param-name">lngX, lngY</td><td class="param-type">Long</td><td>화면 좌표 (픽셀)</td></tr>
+            <tr><td class="param-name">blnLeft <span class="param-opt">Optional=True</span></td><td class="param-type">Boolean</td><td>True: 좌클릭 / False: 우클릭</td></tr>
+            <tr><td class="param-name">strDelay <span class="param-opt">Optional</span></td><td class="param-type">String</td><td>클릭 전 대기 시간 (초)</td></tr>
+            <tr><td class="param-name">strWait <span class="param-opt">Optional</span></td><td class="param-type">String</td><td>클릭 후 대기 시간 (초)</td></tr>
+          </table>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre"><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Excel.ClickAtPosition"</span>, _
+    <span class="c-num">500</span>, <span class="c-num">300</span>, <span class="c-kw">True</span>, <span class="c-str">"0.5"</span>, <span class="c-str">"1"</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">WaitTime(strTime)</span>
+          <span class="func-desc">지정 시간(초) 대기</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">Application.Wait 기반 대기입니다. 정밀한 밀리초 대기는 am_Utils.WaitMs 를 사용하세요.</p>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre"><span class="c-cmt">' 2.5초 대기</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Excel.WaitTime"</span>, <span class="c-str">"2.5"</span></pre>
+          </div>
         </div>
       </div>
     </div>
@@ -1582,6 +2404,158 @@ strID = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
     </div>
 
     <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">검사 유틸리티</h3>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name" id="fn-utils-check">IsCells(obj) As Boolean</span>
+          <span class="func-desc">Range 타입 여부</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">인수가 Range(셀) 타입인지 확인합니다. TypeName 대비 오류 없이 안전하게 확인합니다.</p>
+          <div class="return-tag">반환: Boolean</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">If</span> <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Utils.IsCells"</span>, vntObj) <span class="c-kw">Then</span>
+    <span class="c-cmt">' Range 타입</span>
+<span class="c-kw">End If</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name">IsRangeMerged(rng) As Boolean</span>
+          <span class="func-desc">병합 셀 포함 여부</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">범위 내에 병합된 셀이 하나라도 있으면 True를 반환합니다.</p>
+          <div class="return-tag">반환: Boolean</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">If</span> <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Utils.IsRangeMerged"</span>, _
+    Sheet1.Range(<span class="c-str">"A1:D1"</span>)) <span class="c-kw">Then</span>
+    <span class="c-cmt">' 병합 셀 존재</span>
+<span class="c-kw">End If</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name">IsTableRange(rng, [ByRef tbl], [ByRef celTblHeader]) As Boolean</span>
+        <span class="func-desc">범위가 테이블 내부인지 확인 (ListObject 반환 포함)</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">am_Table.IsTable 과 달리 ByRef로 해당 ListObject와 헤더 셀도 반환합니다.</p>
+        <div class="tip-box warn">
+          <span class="tip-icon">⚠️</span>
+          <span>ByRef 파라미터(tbl, celTblHeader)는 Application.Run으로 반환받을 수 없습니다. Boolean 반환값만 Application.Run으로 사용하거나, xlam 내부에서 직접 호출하세요.</span>
+        </div>
+        <div class="return-tag">반환: Boolean</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">기타 유틸리티</h3>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-utils-misc">WaitMs(lngMs)</span>
+          <span class="func-desc">밀리초 단위 대기</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">DoEvents를 포함하여 UI 응답을 유지하면서 대기합니다.</p>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-cmt">' 500ms 대기</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Utils.WaitMs"</span>, <span class="c-num">500</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">CheckSelectionType()</span>
+          <span class="func-desc">현재 선택 타입 MsgBox 표시</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">현재 선택된 개체의 타입 이름을 메시지박스로 표시합니다. 디버깅 목적으로 사용합니다.</p>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Utils.CheckSelectionType"</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name">OpenAddressInGoogleMaps(strAddress)</span>
+          <span class="func-desc">주소를 Google Maps로 열기</span>
+        </div>
+        <div class="func-body">
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Utils.OpenAddressInGoogleMaps"</span>, _
+    <span class="c-str">"서울시 강남구 테헤란로 427"</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name">GetVideoLength(strPath) As String</span>
+          <span class="func-desc">동영상 재생 시간 반환</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">Shell 명령을 통해 동영상 파일의 재생 길이를 문자열로 반환합니다.</p>
+          <div class="return-tag">반환: String — 재생 시간 (예: "00:05:32")</div>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Dim</span> strLen <span class="c-kw">As</span> <span class="c-kw">String</span>
+strLen = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_Utils.GetVideoLength"</span>, _
+    <span class="c-str">"C:\Videos\sample.mp4"</span>)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name">SetIfValTrue(rng, vntValue, [blnMsg=False])</span>
+        <span class="func-desc">유효성 조건이 True일 때만 값 설정</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">셀에 Type=7 사용자 정의 유효성 수식이 설정되어 있을 때, 수식이 True인 값만 셀에 설정합니다. False이면 값을 설정하지 않고 선택적으로 경고 메시지를 표시합니다.</p>
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">rng</td><td class="param-type">Range</td><td>값을 설정할 셀</td></tr>
+          <tr><td class="param-name">vntValue</td><td class="param-type">Variant</td><td>설정할 값</td></tr>
+          <tr><td class="param-name">blnMsg <span class="param-opt">Optional=False</span></td><td class="param-type">Boolean</td><td>True: 유효성 불통과 시 MsgBox 표시</td></tr>
+        </table>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-cmt">' 유효성 검사 통과 시에만 값 입력</span>
+<span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_Utils.SetIfValTrue"</span>, _
+    Sheet1.Range(<span class="c-str">"B5"</span>), <span class="c-str">"입력값"</span>, <span class="c-kw">True</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
     <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:12px; font-weight:600;">수식 평가</h3>
     <div class="func-card">
       <div class="func-header">
@@ -1646,6 +2620,21 @@ ErrHandler:
             <pre><span class="c-cmt">' 로그 활성화</span>
 <span class="c-kw">Application</span>.<span class="c-fn">Run</span> _
     <span class="c-str">"corelib.xlam!am_Error.SetLogEnabled"</span>, <span class="c-kw">True</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name" id="fn-err-getlog">GetLogEnabled() As Boolean</span>
+          <span class="func-desc">현재 로그 활성화 여부 반환</span>
+        </div>
+        <div class="func-body">
+          <div class="return-tag">반환: Boolean</div>
+          <div class="code-block">
+            <pre><span class="c-kw">If</span> <span class="c-kw">Application</span>.<span class="c-fn">Run</span>(<span class="c-str">"corelib.xlam!am_Error.GetLogEnabled"</span>) <span class="c-kw">Then</span>
+    <span class="c-fn">MsgBox</span> <span class="c-str">"로그 활성화 상태"</span>
+<span class="c-kw">End If</span></pre>
           </div>
         </div>
       </div>
@@ -1736,13 +2725,255 @@ blnOK = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
       <span class="tip-icon">⚠️</span>
       <span><strong>엑셀 DB 사용 시:</strong> 현재 열려있는 통합 문서 자신에 OLEDB 쿼리를 실행하면 파일 잠금 오류가 발생할 수 있습니다. 별도의 Excel 파일을 DB로 사용하세요.</span>
     </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">조회 쿼리</h3>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name" id="fn-db-select">SelectQuery(rngTarget, arrQuery, strType, [strFile], [strServer], [strPort], [strDB], [strID], [strPW], [blnTranspose=False], [intMoveCells=0], [blnHeader=False])</span>
+        <span class="func-desc">SELECT 결과를 셀 범위에 출력</span>
+      </div>
+      <div class="func-body">
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">rngTarget</td><td class="param-type">Range</td><td>결과를 출력할 시작 셀</td></tr>
+          <tr><td class="param-name">arrQuery</td><td class="param-type">Variant</td><td>SELECT 쿼리 배열 (단일 쿼리도 Array로 전달)</td></tr>
+          <tr><td class="param-name">strType</td><td class="param-type">String</td><td>DB 종류: "서버" / "엑세스" / "엑셀"</td></tr>
+          <tr><td class="param-name">blnTranspose <span class="param-opt">Optional=False</span></td><td class="param-type">Boolean</td><td>True: 결과를 행/열 전치하여 출력</td></tr>
+          <tr><td class="param-name">intMoveCells <span class="param-opt">Optional=0</span></td><td class="param-type">Integer</td><td>출력 시작 위치 열 오프셋</td></tr>
+          <tr><td class="param-name">blnHeader <span class="param-opt">Optional=False</span></td><td class="param-type">Boolean</td><td>True: 첫 행에 필드명 헤더 포함</td></tr>
+        </table>
+        <div class="code-block">
+          <div class="code-label green">예시 — Access DB</div>
+          <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_DB.SelectQuery"</span>, _
+    Sheet1.Range(<span class="c-str">"A1"</span>), _
+    <span class="c-fn">Array</span>(<span class="c-str">"SELECT * FROM T_주문 WHERE 상태='완료'"</span>), _
+    <span class="c-str">"엑세스"</span>, <span class="c-str">"C:\DB\main.accdb"</span>, _
+    <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-kw">False</span>, <span class="c-num">0</span>, <span class="c-kw">True</span></pre>
+        </div>
+        <div class="code-block" style="margin-top:8px;">
+          <div class="code-label green">예시 — MySQL 서버</div>
+          <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_DB.SelectQuery"</span>, _
+    Sheet1.Range(<span class="c-str">"A1"</span>), _
+    <span class="c-fn">Array</span>(<span class="c-str">"SELECT id, name FROM users LIMIT 100"</span>), _
+    <span class="c-str">"서버"</span>, <span class="c-str">""</span>, <span class="c-str">"192.168.1.10"</span>, <span class="c-str">"3306"</span>, <span class="c-str">"mydb"</span>, <span class="c-str">"user"</span>, <span class="c-str">"pass"</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-sub">Sub</span>
+        <span class="func-name" id="fn-db-excel-query">SelectExcelQuery(...)</span>
+        <span class="func-desc">Excel 파일 대상 OLEDB 쿼리 실행</span>
+      </div>
+      <div class="func-body">
+        <div class="tip-box warn">
+          <span class="tip-icon">⚠️</span>
+          <span><strong>미구현:</strong> <code>SelectExcelQuery</code>는 현재 <code>am_DB.bas</code> 소스에 존재하지 않습니다. 향후 추가될 예정이거나, Excel OLEDB 쿼리는 <code>SelectQuery</code>에 <code>strType="엑셀"</code>을 전달하여 동일하게 처리합니다.</span>
+        </div>
+        <div class="code-block">
+          <div class="code-label green">대체 — SelectQuery + 엑셀 타입 사용</div>
+          <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_DB.SelectQuery"</span>, _
+    Sheet1.Range(<span class="c-str">"A1"</span>), _
+    <span class="c-fn">Array</span>(<span class="c-str">"SELECT * FROM [Sheet1$]"</span>), _
+    <span class="c-str">"엑셀"</span>, <span class="c-str">"C:\Data\source.xlsx"</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-size:14px; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em;">스키마 / 유틸리티</h3>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name" id="fn-db-schema">GetFields([lngFontColor=-1], [lngBgColor=-1], [tbl]) As Variant</span>
+        <span class="func-desc">테이블 헤더 필드명 배열 반환</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">ListObject의 헤더 행에서 조건에 맞는 필드명 배열을 반환합니다. 색상 조건 없이 호출하면 모든 필드명을 반환합니다.</p>
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">lngFontColor <span class="param-opt">Optional=-1</span></td><td class="param-type">Long</td><td>필터: 특정 글꼴 색상 (RGB). -1 = 제한 없음</td></tr>
+          <tr><td class="param-name">lngBgColor <span class="param-opt">Optional=-1</span></td><td class="param-type">Long</td><td>필터: 특정 배경 색상 (RGB). -1 = 제한 없음</td></tr>
+          <tr><td class="param-name">tbl <span class="param-opt">Optional</span></td><td class="param-type">ListObject</td><td>대상 테이블</td></tr>
+        </table>
+        <div class="return-tag">반환: Variant — 필드명 배열</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-cmt">' 모든 필드명</span>
+arrFields = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>(<span class="c-str">"corelib.xlam!am_DB.GetFields"</span>, tbl)
+<span class="c-cmt">' 빨간 글꼴 필드만</span>
+arrFields = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>(<span class="c-str">"corelib.xlam!am_DB.GetFields"</span>, _
+    <span class="c-fn">RGB</span>(<span class="c-num">255</span>,<span class="c-num">0</span>,<span class="c-num">0</span>), -<span class="c-num">1</span>, tbl)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name" id="fn-db-fieldtype">GetFieldAndType(arrFields, strType, strTable, [연결 정보...], [blnParens=False]) As Variant</span>
+        <span class="func-desc">필드명 + DB 데이터 타입 배열 반환</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">지정한 필드 목록에 대해 DB에서 데이터 타입을 조회하여 <code>[필드명, 타입명]</code> 쌍의 배열을 반환합니다.</p>
+        <table class="param-table">
+          <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+          <tr><td class="param-name">arrFields</td><td class="param-type">Variant</td><td>조회할 필드명 배열</td></tr>
+          <tr><td class="param-name">strType</td><td class="param-type">String</td><td>DB 종류</td></tr>
+          <tr><td class="param-name">strTable</td><td class="param-type">String</td><td>대상 테이블명</td></tr>
+          <tr><td class="param-name">blnParens <span class="param-opt">Optional=False</span></td><td class="param-type">Boolean</td><td>True: 타입명에 괄호 포함 (예: VARCHAR(50))</td></tr>
+        </table>
+        <div class="return-tag">반환: Variant — [필드명, 타입명] 쌍의 2차원 배열</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre>arrInfo = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_DB.GetFieldAndType"</span>, _
+    arrFields, <span class="c-str">"엑세스"</span>, <span class="c-str">"T_주문"</span>, <span class="c-str">"C:\DB\main.accdb"</span>, _
+    <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-str">""</span>, <span class="c-kw">True</span>)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name" id="fn-db-connection">GetFieldNameConnection(strType, strTable, [연결 정보...]) As Variant</span>
+        <span class="func-desc">테이블 필드 메타정보 배열 반환</span>
+      </div>
+      <div class="func-body">
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">테이블의 필드명, 타입명, 데이터 수, 순번을 포함한 메타정보 배열을 반환합니다.</p>
+        <div class="return-tag">반환: Variant — 필드 메타정보 2차원 배열</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre>arrMeta = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_DB.GetFieldNameConnection"</span>, _
+    <span class="c-str">"엑세스"</span>, <span class="c-str">"T_주문"</span>, <span class="c-str">"C:\DB\main.accdb"</span>)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name" id="fn-db-info">GetDbInfo() As Variant</span>
+        <span class="func-desc">DB 연결 정보 반환</span>
+      </div>
+      <div class="func-body">
+        <div class="tip-box warn">
+          <span class="tip-icon">⚠️</span>
+          <span><strong>미구현:</strong> <code>GetDbInfo</code>는 현재 <code>am_DB.bas</code> 소스에 존재하지 않습니다. 향후 추가될 예정입니다.</span>
+        </div>
+        <div class="return-tag">반환: Variant — DB 연결 정보 배열 (예정)</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-sub">Sub</span>
+          <span class="func-name" id="fn-db-util">AutoIDs(rng)</span>
+          <span class="func-desc">빈 셀 자동 ID 채움</span>
+        </div>
+        <div class="func-body">
+          <p style="font-size:13px; color:var(--text-sub); margin-bottom:10px;">ID 필드의 빈 셀을 감지하여 연번을 자동으로 채웁니다.</p>
+          <div class="code-block">
+            <div class="code-label green">예시</div>
+            <pre><span class="c-kw">Application</span>.<span class="c-fn">Run</span> <span class="c-str">"corelib.xlam!am_DB.AutoIDs"</span>, _
+    Sheet1.Range(<span class="c-str">"A2:A100"</span>)</pre>
+          </div>
+        </div>
+      </div>
+      <div class="func-card">
+        <div class="func-header">
+          <span class="func-type type-func">Function</span>
+          <span class="func-name" id="fn-db-create">CreateAccessTable(strFile, strTable, arrFieldAndTypes) As Boolean</span>
+          <span class="func-desc">Access 테이블 신규 생성</span>
+        </div>
+        <div class="func-body">
+          <table class="param-table">
+            <tr><th>파라미터</th><th>타입</th><th>설명</th></tr>
+            <tr><td class="param-name">strFile</td><td class="param-type">String</td><td>Access 파일 경로</td></tr>
+            <tr><td class="param-name">strTable</td><td class="param-type">String</td><td>생성할 테이블명</td></tr>
+            <tr><td class="param-name">arrFieldAndTypes</td><td class="param-type">Variant</td><td>[필드명, 타입명] 쌍의 배열 (GetFieldAndType 출력과 동일 형식)</td></tr>
+          </table>
+          <div class="return-tag">반환: Boolean — True: 생성 성공</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-header">
+        <span class="func-type type-func">Function</span>
+        <span class="func-name" id="fn-db-delete">DeleteAccessTable(strFile, strTable) As Boolean</span>
+        <span class="func-desc">Access 테이블 전체 데이터 삭제 (구조 유지)</span>
+      </div>
+      <div class="func-body">
+        <div class="tip-box info">
+          <span class="tip-icon">💡</span>
+          <span>테이블 구조(스키마)는 유지하고 모든 행 데이터만 삭제합니다. 테이블 자체를 DROP하려면 SQL DDL을 ExecuteQueryArr로 직접 실행하세요.</span>
+        </div>
+        <div class="return-tag">반환: Boolean — True: 삭제 성공</div>
+        <div class="code-block">
+          <div class="code-label green">예시</div>
+          <pre><span class="c-kw">Dim</span> blnOK <span class="c-kw">As</span> Boolean
+blnOK = <span class="c-kw">Application</span>.<span class="c-fn">Run</span>( _
+    <span class="c-str">"corelib.xlam!am_DB.DeleteAccessTable"</span>, _
+    <span class="c-str">"C:\DB\main.accdb"</span>, <span class="c-str">"T_임시데이터"</span>)</pre>
+        </div>
+      </div>
+    </div>
   </section>
 
   </div><!-- /content -->
 </main>
 
 <script>
-  // 스크롤 스파이 (사이드바 active 표시)
+  /* ── 드로어 토글 ── */
+  const overlay     = document.getElementById('drawer-overlay');
+  const sidebar     = document.getElementById('sidebar');
+  const menuToggle  = document.getElementById('menu-toggle');
+  const sidebarClose = document.getElementById('sidebar-close');
+
+  function isDrawerMode() { return window.innerWidth <= 1024; }
+
+  function openDrawer() {
+    sidebar.classList.add('open');
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  menuToggle.addEventListener('click', openDrawer);
+  sidebarClose.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // 모바일에서 nav 클릭 시 드로어 자동 닫기
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (isDrawerMode()) closeDrawer();
+    });
+  });
+
+  // 화면 크기가 데스크톱으로 전환될 때 드로어 상태 초기화
+  window.addEventListener('resize', () => {
+    if (!isDrawerMode()) {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+  });
+
+  /* ── 스크롤 스파이 (사이드바 active 표시) ── */
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-item[href^="#"]');
 

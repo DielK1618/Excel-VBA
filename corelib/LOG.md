@@ -123,6 +123,7 @@
 
 | 날짜 | 내용 |
 |---|---|
+| 2026-06-12 | corelib_manual.html 리뉴얼 완성 — Lamborghini 디자인(진블랙·골드), 반응형 드로어 사이드바, 전체 개요↔모듈 앵커 내비게이션, 누락 프로시저 42개 전체 문서화(am_DB 9개 포함, SelectExcelQuery·GetDbInfo 미구현 경고 표기) |
 | 2026-06-11 | corelib_manual_cd.html 신규 — corelib_manual.html 을 Claude Design 기반으로 리뉴얼한 사용자 매뉴얼 완성 |
 | 2026-06-11 | corelib_manual.html 신규 — 11개 모듈 전체 프로시저 설명·코드예시·사이드바·전체 개요 섹션(이름+한 줄 설명) 포함 HTML 매뉴얼 제작 |
 | 2026-06-11 | 전 모듈 테스트 완료 — am_Core/Path/File/Utils/Error/Range/Format/Table/Sheet/Excel 전체 OK |
