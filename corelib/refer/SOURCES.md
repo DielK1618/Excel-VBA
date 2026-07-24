@@ -113,7 +113,7 @@
 
 ---
 
-## am_Excel ← tpl_Chart + tpl_ExportFile + tpl_KeyBoard + tpl_Mouse + tpl_Shapes
+## am_Excel ← tpl_Chart + tpl_ExportFile + tpl_Shapes
 
 ### tpl_Chart
 | 함수 | 이식 여부 | 비고 |
@@ -126,6 +126,21 @@
 | `SetPrintPage` | ✅ | 인쇄 설정, 완성도 높음 |
 | `ExportPDF` | ✅ | PDF 내보내기 |
 | `ExportSheetToCSV` | ✅ (수정 필요) | `Call MkFolder` → prv_MkFolder 내부 구현 |
+
+### tpl_Shapes
+| 함수 | 이식 여부 | 비고 |
+|---|---|---|
+| `RunShpMacro` | ✅ | 도형 텍스트로 매크로 실행 |
+| `GetShapeTextSafe` | ✅ | 도형/그룹 텍스트 안전 반환 |
+| `GetShapeTextSafe_GItem` | ✅ → prv_ | 내부 전용으로 변경 |
+| `ExampleRunShpMacro` | ❌ 제외 | 예시 코드 |
+
+---
+
+## am_Automation ← tpl_KeyBoard + tpl_Mouse + 외부 제공 소스 (신규 모듈, 2026-07-24)
+
+> tpl_KeyBoard/tpl_Mouse는 2026-06-05 am_Excel로 최초 이식되었으나, Excel 객체 모델과 무관한
+> OS 레벨 입력 시뮬레이션이라 2026-07-24 am_Automation으로 재이동함.
 
 ### tpl_KeyBoard
 | 함수/선언 | 이식 여부 | 비고 |
@@ -149,13 +164,19 @@
 | `WaitTime` | ✅ | 대기 유틸 |
 | `GetMousePosition_BT` | ❌ 제외 | 테스트용 서브 |
 
-### tpl_Shapes
-| 함수 | 이식 여부 | 비고 |
+### 외부 제공 소스 (원본 파일명 미상, `refer/export/`에 없음)
+| 함수/선언 | 이식 여부 | 비고 |
 |---|---|---|
-| `RunShpMacro` | ✅ | 도형 텍스트로 매크로 실행 |
-| `GetShapeTextSafe` | ✅ | 도형/그룹 텍스트 안전 반환 |
-| `GetShapeTextSafe_GItem` | ✅ → prv_ | 내부 전용으로 변경 |
-| `ExampleRunShpMacro` | ❌ 제외 | 예시 코드 |
+| `ForceActivateWindow_BT` | ✅ → `ForceActivateWindow` | AttachThreadInput 강제 창 활성화, `_BT` 접미사 제거 |
+| `ClickButtonByText_BT` | ✅ → `ClickButtonByText` | SendMessage(BM_CLICK) 버튼 클릭 |
+| `ClickButtonByRect_BT` | ✅ → `ClickButtonByRect` | 좌표 클릭 방식, ClickAtPosition 내부 재사용 |
+| `ClickButtonByRect_Retry_BT` | ✅ → `ClickButtonByRect_Retry` | 재시도 래퍼 |
+| `ClickButtonByUIA_BT` | ✅ (수정) → `ClickButtonByUIA` | Early Binding(`New CUIAutomation`) → Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`) 전환 — 프로젝트 Late Binding 원칙 준수, 참조 추가 불필요 |
+| `EnumChildProc` | ✅ → `prv_EnumChildProc` | Public → Private, 전역변수 `g_hWndFound`/`g_strTargetText` → 모듈 Private(`m_hWndFound`/`m_strTargetText`) |
+| `Diag_UIA_TestCreate_EarlyBinding_BT` | ❌ 제외 | 진단 전용 |
+| `Diag_UIA_FindWindow_BT` | ❌ 제외 | 진단 전용 |
+| `Diag_UIA_ListButtons_BT` | ❌ 제외 | 진단 전용 |
+| `Diag_CountWmcWindows_BT` | ❌ 제외 | 진단 전용, `WMC SCDK` 특정 앱명 하드코딩 |
 
 ---
 

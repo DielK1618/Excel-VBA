@@ -36,9 +36,14 @@
 |---|---|---|
 | `tpl_Chart` | ✅ 완료 | SetChartDataRange (ws 인수 추가) |
 | `tpl_ExportFile` | ✅ 완료 | SetPrintPage, ExportPDF, ExportSheetToCSV (xlCSV, prv_MkFolder 내부 구현) |
-| `tpl_KeyBoard` | ✅ 완료 | Enum + API + ExecuteKeyAction/Sequence/Range (prv_SendKey/Combo/WaitMs) |
-| `tpl_Mouse` | ✅ 완료 | GetMousePosition, ClickAtPosition, WaitTime (타입 수정, prv_WaitMs 공용) |
 | `tpl_Shapes` | ✅ 완료 | RunShpMacro, GetShapeTextSafe (prv_GetShapeTextSafe_GItem) |
+
+### am_Automation (신규 모듈, 2026-07-24 분리)
+| 원본 | 상태 | 비고 |
+|---|---|---|
+| `tpl_KeyBoard` | ✅ 완료 | Enum + API + ExecuteKeyAction/Sequence/Range (prv_SendKey/Combo/WaitMs). 최초 am_Excel 이식(2026-06-05) 후 2026-07-24 am_Automation으로 재이동 — Excel 객체 모델과 무관한 OS 레벨 입력 시뮬레이션이라 분리 |
+| `tpl_Mouse` | ✅ 완료 | GetMousePosition, ClickAtPosition, WaitTime (타입 수정, prv_WaitMs 공용). 위와 동일 사유로 am_Automation 재이동 |
+| (외부 제공 소스, 원본 파일명 미상) | ✅ 완료 | Win32 SendMessage/좌표 클릭 버튼 제어(ClickButtonByText/Rect/Rect_Retry), AttachThreadInput 강제 창 활성화(ForceActivateWindow), UI Automation 버튼 Invoke(ClickButtonByUIA). `_BT` 접미사 제거, UIA는 Early Binding → Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`) 전환, 진단용 `Diag_*` 4개(WMC SCDK 하드코딩 등)는 CWB 전용/제외 처리 |
 
 ### am_Utils (신규 모듈)
 | 원본 | 상태 | 비고 |
@@ -65,6 +70,7 @@
 | `tpl_Procedure` | VBA 메타프로그래밍 — xlam에서 ThisWorkbook이 xlam 자신을 가리킴, 보안 설정 의존 |
 | `tpl_TestBed` | 테스트 전용 |
 | `frm_*` (전체) | 사용자 정의 폼은 특정 파일 종속 |
+| `Diag_UIA_TestCreate_EarlyBinding_BT`, `Diag_UIA_FindWindow_BT`, `Diag_UIA_ListButtons_BT`, `Diag_CountWmcWindows_BT` (외부 제공 소스) | 진단/디버그 전용, `WMC SCDK` 등 특정 앱명 하드코딩 |
 
 ---
 
@@ -92,6 +98,7 @@
 | `tpl_Validation` | `am_Utils` | 2026-06-05 |
 | `tpl_Chart` | `am_Excel` | 2026-06-05 |
 | `tpl_ExportFile` | `am_Excel` | 2026-06-05 |
-| `tpl_KeyBoard` | `am_Excel` | 2026-06-05 |
-| `tpl_Mouse` | `am_Excel` | 2026-06-05 |
 | `tpl_Shapes` | `am_Excel` | 2026-06-05 |
+| `tpl_KeyBoard` | `am_Automation` | 2026-06-05 (am_Excel → am_Automation 재이동 2026-07-24) |
+| `tpl_Mouse` | `am_Automation` | 2026-06-05 (am_Excel → am_Automation 재이동 2026-07-24) |
+| (외부 제공 소스, 원본 파일명 미상) | `am_Automation` | 2026-07-24 |

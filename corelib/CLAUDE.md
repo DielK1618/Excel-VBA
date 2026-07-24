@@ -38,6 +38,7 @@ corelib/
 │   ├── am_File.bas
 │   ├── am_DB.bas
 │   ├── am_Excel.bas
+│   ├── am_Automation.bas
 │   ├── am_Utils.bas           ← 미작성
 │   └── am_Error.bas           ← 미작성
 │
@@ -48,6 +49,7 @@ corelib/
     ├── ref_File.bas           ← am_File 래퍼 (기본 포함)
     ├── ref_DB.bas             ← am_DB 래퍼 (기본 포함)
     ├── ref_Excel.bas          ← am_Excel 래퍼 (기본 포함)
+    ├── ref_Automation.bas     ← am_Automation 래퍼 (기본 포함)
     ├── ref_Range.bas          ← am_Range 래퍼 (기본 포함)
     ├── ref_Sheet.bas          ← am_Sheet 래퍼 (기본 포함)
     ├── ref_Table.bas          ← am_Table 래퍼 (기본 포함)
@@ -77,7 +79,8 @@ corelib/
 | `am_Path` | `am_Path.bas` | 경로 토큰 변환, 경로 정규화 |
 | `am_File` | `am_File.bas` | 파일/폴더 생성, 삭제, 복사, 검색, 다이얼로그 |
 | `am_DB` | `am_DB.bas` | DB 연결, 쿼리 실행, 스키마 조회, 타입 처리 |
-| `am_Excel` | `am_Excel.bas` | 시트, 테이블, 조건부 서식, 유효성 검사 등 엑셀 자동화 |
+| `am_Excel` | `am_Excel.bas` | 인쇄/내보내기, 차트, 도형 등 Excel 객체 모델 자동화 |
+| `am_Automation` | `am_Automation.bas` | 키보드/마우스 입력 시뮬레이션, 창 탐색/활성화/버튼 제어 (Windows API, Excel 비종속) |
 | `am_Utils` | `am_Utils.bas` | 문자열, 배열, 날짜 등 순수 범용 유틸리티 |
 | `am_Error` | `am_Error.bas` | 공통 에러 핸들링 |
 
@@ -92,6 +95,7 @@ corelib/
 | `ref_File` | `ref_File.bas` | `am_File` |
 | `ref_DB` | `ref_DB.bas` | `am_DB` |
 | `ref_Excel` | `ref_Excel.bas` | `am_Excel` |
+| `ref_Automation` | `ref_Automation.bas` | `am_Automation` |
 | `ref_Range` | `ref_Range.bas` | `am_Range` |
 | `ref_Sheet` | `ref_Sheet.bas` | `am_Sheet` |
 | `ref_Table` | `ref_Table.bas` | `am_Table` |

@@ -26,7 +26,7 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 
 ---
 
-## 현재 완성 상태 (2026-06-09 기준)
+## 현재 완성 상태 (2026-07-24 기준)
 
 ### 완성된 am_ 모듈
 
@@ -42,7 +42,8 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 | `am_Range` | FindRange, FindCellsByColor, GetUsedRange |
 | `am_Format` | 조건부 서식, 유효성 검사 |
 | `am_Utils` | 배열·검사·코드생성·날짜·외부앱·도구·수식 유틸리티 |
-| `am_Excel` | 인쇄/내보내기, 차트, 도형, 키보드/마우스 자동화 |
+| `am_Excel` | 인쇄/내보내기, 차트, 도형 등 Excel 객체 모델 자동화 |
+| `am_Automation` | 키보드/마우스 입력 시뮬레이션, 창 탐색/활성화/버튼 제어(Win32 API, UI Automation) — Excel 비종속, 2026-07-24 신규 |
 
 ### 완성된 cwb_ 모듈
 
@@ -57,6 +58,14 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 ---
 
 ## 다음 작업
+
+### 미반영 항목 (2026-07-24 기준 — 소스만 작성됨, 바이너리 미반영)
+
+- `am_Automation.bas`(신규) 를 `corelib.xlam` VBE에 임포트
+- `am_Excel.bas`(키보드/마우스 섹션 제거됨) 를 `corelib.xlam` 기존 모듈과 교체 임포트
+- `ref_Automation.bas`(신규), `ref_Excel.bas`(키보드/마우스 래퍼 제거됨) 를 `cwb_01.xlsm` 에 반영
+- 창/버튼 제어 함수(`ClickButtonByText`/`ClickButtonByRect`/`ForceActivateWindow`/`ClickButtonByUIA`)는 실제 대상 창이 있어야 검증 가능 — `tpl_Test` 자동화 테스트 대상 아님, 수동 확인 필요
+- `ClickButtonByUIA` 는 Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`) 이라 시스템에 UI Automation 클라이언트가 정상 등록돼 있는지(Windows 기본 포함) 최초 1회 확인 권장
 
 **바로 다음 작업: tpl_Test.RunAllTests() 실행 및 결과 검증**
 

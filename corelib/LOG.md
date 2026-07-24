@@ -19,7 +19,8 @@
 | `am_Table.bas` | `am_Table` | ✅ 완성 | 테이블 CRUD/필터/정렬/검색 |
 | `am_Range.bas` | `am_Range` | ✅ 완성 | |
 | `am_Format.bas` | `am_Format` | ✅ 완성 | 조건부 서식, 유효성 검사 |
-| `am_Excel.bas` | `am_Excel` | ✅ 완성 | tpl_ExportFile/Chart/Shapes/KeyBoard/Mouse 이식 완료 |
+| `am_Excel.bas` | `am_Excel` | ✅ 완성 | tpl_ExportFile/Chart/Shapes 이식 완료 |
+| `am_Automation.bas` | `am_Automation` | ✅ 완성 | tpl_KeyBoard/Mouse(am_Excel에서 재이동) + 외부 제공 소스(창/버튼 제어, UIA) 이식 완료 |
 | `am_Utils.bas` | `am_Utils` | ✅ 완성 | tpl_Array/Check/Code/ExtApp/Media/ReplaceText/Tools/Validation 이식 완료 |
 | `am_Error.bas` | `am_Error` | ✅ 완성 | HandleError / WriteLog |
 
@@ -34,6 +35,7 @@
 | `ref_File.bas` | `ref_File` | ✅ 완성 |
 | `ref_DB.bas` | `ref_DB` | ✅ 완성 |
 | `ref_Excel.bas` | `ref_Excel` | ✅ 완성 |
+| `ref_Automation.bas` | `ref_Automation` | ✅ 완성 |
 | `ref_Range.bas` | `ref_Range` | ✅ 완성 |
 | `ref_Sheet.bas` | `ref_Sheet` | ✅ 완성 |
 | `ref_Table.bas` | `ref_Table` | ✅ 완성 |
@@ -81,9 +83,10 @@
 | `tpl_Validation` | `am_Utils` | ✅ 완료 |
 | `tpl_Chart` | `am_Excel` | ✅ 완료 |
 | `tpl_ExportFile` | `am_Excel` | ✅ 완료 |
-| `tpl_KeyBoard` | `am_Excel` | ✅ 완료 |
-| `tpl_Mouse` | `am_Excel` | ✅ 완료 |
 | `tpl_Shapes` | `am_Excel` | ✅ 완료 |
+| `tpl_KeyBoard` | `am_Automation` | ✅ 완료 (am_Excel → am_Automation 재이동) |
+| `tpl_Mouse` | `am_Automation` | ✅ 완료 (am_Excel → am_Automation 재이동) |
+| 외부 제공 소스(창/버튼 제어, UIA) | `am_Automation` | ✅ 완료 |
 | `tpl_Buttons`, `tpl_Buttons_other`, `tpl_Buttons_Top` | — | ❌ CWB 전용 |
 | `tpl_Form`, `tpl_TestBed`, `tpl_Procedure` | — | ❌ CWB 전용 |
 | `frm_*` (전체) | — | ❌ CWB 전용 (사용자 직접 제작) |
@@ -122,6 +125,8 @@
 | tpl_Procedure | ❌ CWB 전용 결정 (xlam에서 ThisWorkbook = xlam 자신, Trust Center 의존) |
 | frm_* 모듈 | ❌ CWB 전용 결정 (사용자 정의 폼은 특정 파일 종속) |
 | SheetLock 입력셀 규약 | 배경색 없는 셀(Interior.Pattern=xlNone) = 입력 가능 셀 |
+| am_Excel vs am_Automation 경계 | am_Excel=Excel 객체 모델(시트/차트/도형) 전용, am_Automation=OS 레벨 입력·창 제어(키보드/마우스 시뮬레이션, FindWindow/UIA) 전용으로 분리 |
+| UIA(UI Automation) 바인딩 방식 | Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`) — Early Binding(참조 추가) 금지, Late Binding 원칙 예외 없음 |
 
 ---
 
@@ -142,6 +147,7 @@
 
 | 날짜 | 내용 |
 |---|---|
+| 2026-07-24 | **am_Automation 신규 모듈 분리 및 창/버튼 제어 이식** — am_Excel의 키보드/마우스 섹션(tpl_KeyBoard·tpl_Mouse, Windows API 선언·Enum·ExecuteKeyAction/Sequence·ProcessRangeWithKeySequence·GetMousePosition·ClickAtPosition·WaitTime 전체)이 Excel 객체 모델과 무관한 OS 레벨 자동화라 판단하여 am_Automation.bas로 재이동(am_Excel은 인쇄/차트/도형만 남김). 동시에 외부 제공 소스(원본 파일명 미상, `_BT` 접미사 네이밍)에서 창 탐색/버튼 클릭/강제 활성화/UI Automation 기능을 이식: `ForceActivateWindow`(AttachThreadInput), `ClickButtonByText`(SendMessage BM_CLICK), `ClickButtonByRect`/`ClickButtonByRect_Retry`(좌표 클릭, ClickAtPosition 내부 재사용), `ClickButtonByUIA`(UI Automation Invoke). `_BT` 접미사 전체 제거, Public 전역변수(`g_hWndFound`/`g_strTargetText`) → 모듈 Private(`m_`) 전환, `EnumChildProc` → `prv_EnumChildProc`. UIA는 원본 Early Binding(`New CUIAutomation`, 참조 라이브러리 필요)을 Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`)으로 전환하여 프로젝트 원칙(참조 추가 없이 CreateObject 사용) 준수. 진단용 `Diag_*` 4개(WMC SCDK 하드코딩 등)는 CWB 전용/이식 제외. `ref_Excel.bas`에서 키보드/마우스 래퍼 제거, `ref_Automation.bas` 신규 작성(전 함수 래핑, ParamArray/ByRef 함수 3개는 기존 관례대로 래핑 불가 명시). `MIGRATE.md`/`refer/SOURCES.md`/`CLAUDE.md`(폴더구조·모듈목록) 동반 갱신 |
 | 2026-06-16 | **LOCK_PW 상수 도입 — 시트/워크북 보호 기본 비밀번호**: am_Core에 `Public Const LOCK_PW As String = "1234"` 선언, SheetLock/SheetUnLock(am_Sheet) · WB_Lock/WB_UnLock(am_Core) strPW를 Optional로 변경(기본값 LOCK_PW). ref_Core에 동일 상수 선언, ref_Sheet/ref_Core 래퍼 동일 패턴 적용. 비밀번호 미입력 시 LOCK_PW 자동 사용, 필요 시 명시 전달 가능. |
 | 2026-06-16 | **Optional 파라미터 패턴 전체 적용** — ws/wb/tbl 필수 인수를 Optional로 변경(기본: ActiveSheet/ActiveWorkbook/ActiveSheet.ListObjects(1)), 파라미터 재정렬(Optional은 뒤로). 변경 대상: am_Sheet(8개), am_Table(4개), am_Excel(ExportSheetToCSV), am_DB(DelExcelRecQuery), ref_Sheet(8개), ref_Table(4개), ref_Excel(ExportSheetToCSV), ref_DB(DelExcelRecQuery). ref_ 래퍼는 Optional 해소 후 명시값 전달 패턴 적용. cwb ref_ 전 모듈(11개) 프로시저 헤더 주석 추가 — 목적/인수/반환/예시 형식 통일. am_Range.FindCellsByColor 버그 수정: Find(What:="") 이전 검색어 재사용 문제 → Find(What:="*") + SpecialCells(xlCellTypeBlanks) 하이브리드로 교체. am_Sheet.SheetLock 전면 재설계: (1) Interior.ColorIndex → Interior.Pattern 으로 변경(테마/RGB 색상 감지 누락 수정), (2) prv_GetUsedRange(내용 기반) → ws.UsedRange(서식 포함, 빈 회색 셀 포함)로 교체, (3) 셀 루프 잠금 → SearchFormat+SpecialCells 하이브리드로 최적화(내용셀 네이티브 Find, 빈셀만 루프, rngUnlock 벌크 일괄 해제) |
 | 2026-06-12 | corelib_manual.html 리뉴얼 완성 — Lamborghini 디자인(진블랙·골드), 반응형 드로어 사이드바, 전체 개요↔모듈 앵커 내비게이션, 누락 프로시저 42개 전체 문서화(am_DB 9개 포함, SelectExcelQuery·GetDbInfo 미구현 경고 표기) |

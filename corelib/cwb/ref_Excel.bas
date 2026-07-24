@@ -6,42 +6,7 @@ Option Explicit
 ' │  역할 : am_Excel Application.Run 래퍼                  │
 ' └─────────────────────────────────────────────────────────┘
 
-' 참고 : 아래 프로시저는 래핑 불가 → 직접 Application.Run 사용
-'        - ExecuteKeySequence          : ParamArray 파라미터
-'        - ProcessRangeWithKeySequence : ParamArray 파라미터
-'        - GetMousePosition            : ByRef Long 파라미터
-
 Private Const REF As String = "corelib.xlam!am_Excel."
-
-' ── Enum 재선언 (CWB 직접 참조용) ────────────────────────────
-' xlam 에 정의된 Public Enum 은 CWB 에서 이름으로 접근 불가
-' → ref_Excel 에 동일 값으로 재선언하여 CWB 코드에서 상수처럼 사용
-
-Public Enum VirtualKeys
-    VK_TAB     = &H9
-    VK_RETURN  = &HD
-    VK_CONTROL = &H11
-    VK_MENU    = &H12
-    VK_ESCAPE  = &H1B
-    VK_SPACE   = &H20
-    VK_LEFT    = &H25
-    VK_UP      = &H26
-    VK_RIGHT   = &H27
-    VK_DOWN    = &H28
-End Enum
-
-Public Enum KeyActions
-    ACTION_COPY        = 1
-    ACTION_PASTE       = 2
-    ACTION_TAB         = 3
-    ACTION_ENTER       = 4
-    ACTION_ALT_TAB     = 5
-    ACTION_ESCAPE      = 6
-    ACTION_ARROW_DOWN  = 7
-    ACTION_ARROW_UP    = 8
-    ACTION_ARROW_LEFT  = 9
-    ACTION_ARROW_RIGHT = 10
-End Enum
 
 ' ── 인쇄 / 내보내기 ──────────────────────────────────────────
 
@@ -145,38 +110,4 @@ Public Function GetShapeTextSafe(ByVal shp As Shape) As String
     GetShapeTextSafe = Application.Run(REF & "GetShapeTextSafe", shp)
 End Function
 
-' ── 키보드 ───────────────────────────────────────────────────
-
-' 목적   : 단일 키보드 액션 실행 (KeyActions Enum 사용)
-' 인수   : action    - 실행할 액션 (KeyActions Enum: ACTION_COPY 등)
-'          waitAfter - 액션 후 대기 시간(ms, 기본: 100)
-' 예시   : ExecuteKeyAction ACTION_COPY
-'          ExecuteKeyAction ACTION_PASTE, 200
-Public Sub ExecuteKeyAction(ByVal action As KeyActions, _
-                            Optional ByVal waitAfter As Long = 100)
-    Application.Run REF & "ExecuteKeyAction", CLng(action), waitAfter
-End Sub
-
-' ── 마우스 ───────────────────────────────────────────────────
-
-' 목적   : 화면 절대 좌표 위치 클릭
-' 인수   : lngX      - 클릭 X 좌표 (픽셀)
-'          lngY      - 클릭 Y 좌표 (픽셀)
-'          blnLeft   - True: 좌클릭 / False: 우클릭 (기본: True)
-'          strDelay  - 클릭 전 대기 시간 문자열 (예: "00:00:01")
-'          strWait   - 클릭 후 대기 시간 문자열
-' 예시   : ClickAtPosition 500, 300
-Public Sub ClickAtPosition(ByVal lngX As Long, _
-                           ByVal lngY As Long, _
-                           Optional ByVal blnLeft As Boolean = True, _
-                           Optional ByVal strDelay As String = "", _
-                           Optional ByVal strWait As String = "")
-    Application.Run REF & "ClickAtPosition", lngX, lngY, blnLeft, strDelay, strWait
-End Sub
-
-' 목적   : 특정 시각까지 대기 (Application.Wait 래퍼)
-' 인수   : strTime - 대기 종료 시각 문자열 (예: "00:00:02" → 2초 후)
-' 예시   : WaitTime "00:00:03"
-Public Sub WaitTime(ByVal strTime As String)
-    Application.Run REF & "WaitTime", strTime
-End Sub
+' 키보드/마우스 래퍼는 ref_Automation 으로 이전됨 (2026-07-24)
