@@ -333,6 +333,10 @@ Set objFSO  = CreateObject("Scripting.FileSystemObject")
 Set dicData = CreateObject("Scripting.Dictionary")
 ```
 
+- **예외**: `am_Automation.ClickButtonByUIA` (UI Automation) — `CreateObject("UIAutomationClient.CUIAutomation")`가
+  이 개발 환경(Excel 2010 32bit)에서 런타임 429 오류로 실패 확인됨(`TROUBLESHOOTING.md` TS-V16).
+  Early Binding(`New CUIAutomation`)만 정상 동작 → VBE 참조에 **UIAutomationClient** 라이브러리 추가 필요
+
 ### 배열 인덱스
 
 - 항상 `LBound` / `UBound` 사용

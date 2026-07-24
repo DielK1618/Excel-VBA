@@ -43,7 +43,7 @@
 |---|---|---|
 | `tpl_KeyBoard` | ✅ 완료 | Enum + API + ExecuteKeyAction/Sequence/Range (prv_SendKey/Combo/WaitMs). 최초 am_Excel 이식(2026-06-05) 후 2026-07-24 am_Automation으로 재이동 — Excel 객체 모델과 무관한 OS 레벨 입력 시뮬레이션이라 분리 |
 | `tpl_Mouse` | ✅ 완료 | GetMousePosition, ClickAtPosition, WaitTime (타입 수정, prv_WaitMs 공용). 위와 동일 사유로 am_Automation 재이동 |
-| (외부 제공 소스, 원본 파일명 미상) | ✅ 완료 | Win32 SendMessage/좌표 클릭 버튼 제어(ClickButtonByText/Rect/Rect_Retry), AttachThreadInput 강제 창 활성화(ForceActivateWindow), UI Automation 버튼 Invoke(ClickButtonByUIA). `_BT` 접미사 제거, UIA는 Early Binding → Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`) 전환, 진단용 `Diag_*` 4개(WMC SCDK 하드코딩 등)는 CWB 전용/제외 처리 |
+| (외부 제공 소스, 원본 파일명 미상) | ✅ 완료 | Win32 SendMessage/좌표 클릭 버튼 제어(ClickButtonByText/Rect/Rect_Retry), AttachThreadInput 강제 창 활성화(ForceActivateWindow), UI Automation 버튼 Invoke(ClickButtonByUIA). `_BT` 접미사 제거, 진단용 `Diag_*` 4개(WMC SCDK 하드코딩 등)는 CWB 전용/제외 처리. UIA는 Late Binding 시도 → 실제 환경(Excel 2010 32bit)에서 429 오류로 실패 확인 → 원본과 동일한 Early Binding(`New CUIAutomation`, VBE 참조 UIAutomationClient 추가 필요)으로 확정 (2026-07-24, Late Binding 원칙의 명시적 예외) |
 
 ### am_Utils (신규 모듈)
 | 원본 | 상태 | 비고 |

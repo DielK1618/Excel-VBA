@@ -171,7 +171,7 @@
 | `ClickButtonByText_BT` | ✅ → `ClickButtonByText` | SendMessage(BM_CLICK) 버튼 클릭 |
 | `ClickButtonByRect_BT` | ✅ → `ClickButtonByRect` | 좌표 클릭 방식, ClickAtPosition 내부 재사용 |
 | `ClickButtonByRect_Retry_BT` | ✅ → `ClickButtonByRect_Retry` | 재시도 래퍼 |
-| `ClickButtonByUIA_BT` | ✅ (수정) → `ClickButtonByUIA` | Early Binding(`New CUIAutomation`) → Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`) 전환 — 프로젝트 Late Binding 원칙 준수, 참조 추가 불필요 |
+| `ClickButtonByUIA_BT` | ✅ (수정) → `ClickButtonByUIA` | 최초 Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`)으로 전환 시도했으나 실제 환경(Excel 2010 32bit)에서 런타임 429 오류로 실패 확인 → 원본과 동일한 Early Binding(`New CUIAutomation`)으로 확정. VBE 참조에 UIAutomationClient 라이브러리 추가 필요(Late Binding 원칙의 명시적 예외, TROUBLESHOOTING.md TS-V16) |
 | `EnumChildProc` | ✅ → `prv_EnumChildProc` | Public → Private, 전역변수 `g_hWndFound`/`g_strTargetText` → 모듈 Private(`m_hWndFound`/`m_strTargetText`) |
 | `Diag_UIA_TestCreate_EarlyBinding_BT` | ❌ 제외 | 진단 전용 |
 | `Diag_UIA_FindWindow_BT` | ❌ 제외 | 진단 전용 |

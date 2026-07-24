@@ -5,6 +5,8 @@ Option Explicit
 ' |  am_Automation                                          |
 ' |  역할 : 키보드/마우스 입력 시뮬레이션, 창 탐색/활성화/버튼 제어 |
 ' +---------------------------------------------------------+
+' ※ 참조 필요: ClickButtonByUIA(Early Binding) 사용을 위해 VBE 도구 > 참조에서
+'   "UIAutomationClient" 라이브러리를 체크해야 함 (프로젝트 Late Binding 원칙의 명시적 예외 — TROUBLESHOOTING.md TS-V16)
 
 ' -- Windows API --
 Private Declare PtrSafe Sub keybd_event Lib "user32" _
@@ -56,7 +58,10 @@ Private Const MOUSEEVENTF_RIGHTUP   As Long = &H10
 Private Const BM_CLICK   As Long = &HF5
 Private Const SW_RESTORE As Long = 9
 
-' UI Automation 속성/패턴 ID — Late Binding(CreateObject) 방식이라 참조 추가 없이 그대로 사용
+' UI Automation 속성/패턴 ID
+' ※ Early Binding 사용 — VBE 참조에 "UIAutomationClient" 라이브러리 추가 필수 (프로젝트 Late Binding 원칙의 명시적 예외)
+'   CreateObject("UIAutomationClient.CUIAutomation") Late Binding은 이 환경(Excel 2010 32bit)에서
+'   런타임 429 오류(ActiveX 구성 요소는 개체를 만들 수 없습니다)로 실패 확인됨 → TROUBLESHOOTING.md TS-V16 참고
 Private Const UIA_NamePropertyId        As Long = 30005
 Private Const UIA_InvokePatternId       As Long = 10000
 Private Const UIA_ControlTypePropertyId As Long = 30003
@@ -335,22 +340,22 @@ Public Function ForceActivateWindow(ByVal strWindowTitle As String) As Boolean
     ForceActivateWindow = True
 End Function
 
-' 목적   : UI Automation(Late Binding)으로 창 안의 버튼을 이름으로 찾아 Invoke
+' 목적   : UI Automation(Early Binding)으로 창 안의 버튼을 이름으로 찾아 Invoke
 ' 인수   : strWindowName - 대상 창 이름 (UIA Name 속성 기준)
 '          strButtonName - 찾을 버튼 이름 (UIA Name 속성 기준)
 ' 반환   : Boolean - Invoke 성공 여부
-' 참고   : CreateObject("UIAutomationClient.CUIAutomation") 사용 — 프로젝트 참조 추가 불필요 (Late Binding, am_ 설계 원칙 준수)
+' 참고   : Early Binding 사용 — VBE 참조에 "UIAutomationClient" 라이브러리 추가 필수
+'          (Late Binding은 이 환경에서 429 오류로 실패 확인 → 프로젝트 Late Binding 원칙의 명시적 예외, TS-V16 참고)
 Public Function ClickButtonByUIA(ByVal strWindowName As String, ByVal strButtonName As String) As Boolean
     On Error GoTo ErrHandler
 
-    Dim oAutomation    As Object
-    Dim oRoot          As Object
-    Dim oCondition      As Object
-    Dim oWindowElement  As Object
-    Dim oButtonElement  As Object
-    Dim oInvokePattern  As Object
+    Dim oAutomation     As New CUIAutomation
+    Dim oRoot           As IUIAutomationElement
+    Dim oCondition       As IUIAutomationCondition
+    Dim oWindowElement   As IUIAutomationElement
+    Dim oButtonElement   As IUIAutomationElement
+    Dim oInvokePattern   As IUIAutomationInvokePattern
 
-    Set oAutomation = CreateObject("UIAutomationClient.CUIAutomation")
     Set oRoot = oAutomation.GetRootElement
 
     Set oCondition = oAutomation.CreatePropertyCondition(UIA_NamePropertyId, strWindowName)

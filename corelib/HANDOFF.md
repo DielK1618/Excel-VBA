@@ -59,15 +59,21 @@ CWB(Client WorkBook)에서 `Workbooks.Open` 방식으로 xlam을 로드하고
 
 ## 다음 작업
 
-### 미반영 항목 (2026-07-24 기준 — 소스만 작성됨, 바이너리 미반영)
+### am_Automation 반영 상태 (2026-07-24 기준)
 
-- `am_Automation.bas`(신규) 를 `corelib.xlam` VBE에 임포트
-- `am_Excel.bas`(키보드/마우스 섹션 제거됨) 를 `corelib.xlam` 기존 모듈과 교체 임포트
-- `ref_Automation.bas`(신규), `ref_Excel.bas`(키보드/마우스 래퍼 제거됨) 를 `cwb_01.xlsm` 에 반영
-- 창/버튼 제어 함수(`ClickButtonByText`/`ClickButtonByRect`/`ForceActivateWindow`/`ClickButtonByUIA`)는 실제 대상 창이 있어야 검증 가능 — `tpl_Test` 자동화 테스트 대상 아님, 수동 확인 필요
-- `ClickButtonByUIA` 는 Late Binding(`CreateObject("UIAutomationClient.CUIAutomation")`) 이라 시스템에 UI Automation 클라이언트가 정상 등록돼 있는지(Windows 기본 포함) 최초 1회 확인 권장
+- ✅ `am_Automation.bas` corelib.xlam VBE 임포트 완료 (사용자 확인)
+- ✅ `ref_Automation.bas` CWB 워크북 VBE 임포트 완료 (사용자 확인)
+- ✅ `corelib.xlam` VBE 참조에 "UIAutomationClient" 라이브러리 체크 완료 (사용자 확인)
+- ⬜ **컴파일 체크** — `디버그 > VBAProject 컴파일`로 Early Binding 타입(`IUIAutomationElement` 등) 정상 인식 확인 (다음 세션에서 결과 확인)
+- ⬜ **`ClickButtonByUIA` 실제 클릭 기능 테스트** — Windows 계산기 등으로 검증 예정:
+  ```vba
+  ?Application.Run("corelib.xlam!am_Automation.ClickButtonByUIA", "계산기", "1")
+  ```
+  `True` 반환 + 계산기 화면에 값 입력되면 정상. 버튼 이름이 안 맞으면 임시 `Diag_ListButtons` 스니펫(모듈에는 미포함, 대화 로그 참고)으로 실제 이름 확인 후 재시도
+- ⬜ `ClickButtonByText`/`ClickButtonByRect`/`ForceActivateWindow` 도 실제 대상 창으로 수동 확인 필요 — `tpl_Test` 자동화 테스트 대상 아님
+- ⬜ (아직 미반영) `am_Excel.bas`(키보드/마우스 섹션 제거된 버전), `ref_Excel.bas`(키보드/마우스 래퍼 제거된 버전) 교체 임포트 — am_Automation/ref_Automation만 추가 임포트했다면 기존 am_Excel/ref_Excel에 키보드/마우스 함수가 중복 존재할 수 있어 확인 필요
 
-**바로 다음 작업: tpl_Test.RunAllTests() 실행 및 결과 검증**
+**바로 다음 작업: 컴파일 체크 → `ClickButtonByUIA` 계산기 테스트 → 결과에 따라 버튼 이름 재확인**
 
 ### 준비 완료 상태 (2026-06-09 기준)
 
